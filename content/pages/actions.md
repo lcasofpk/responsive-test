@@ -5,7 +5,7 @@ permalink: /actions/index.html
 layout: base.njk
 showInNav: true
 ---
-<div class="page-hero"><h1>Advocacy &amp; Legal Action</h1><p>Serving as a constitutional watchdog for local democracy in Pakistan.</p></div>
+<div class="page-hero"><h1>Actions &amp; Legal Action</h1><p>Serving as a constitutional watchdog for local democracy in Pakistan.</p></div>
 <section class="section">
 <h2>Historic Legal Milestones</h2>
 <div class="timeline">
