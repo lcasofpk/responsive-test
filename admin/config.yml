@@ -30,8 +30,7 @@ collections:
       - { label: "Layout", name: "layout", widget: "hidden", default: "news-post.njk" }
       - { label: "Body", name: "body", widget: "markdown" }
 
-  - name: "pages"
-      - name: "website_pages"
+    - name: "pages"
     label: "Website Pages"
     folder: "content/pages"
     create: true
@@ -70,7 +69,7 @@ collections:
           - "numbered-list"
         editor_components:
           - "image"
-
+          
   - name: "documents"
     label: "Document / PDF Repository"
     files:
