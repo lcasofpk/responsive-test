@@ -39,18 +39,22 @@ module.exports = function(eleventyConfig) {
   });
 
   /*
-   * CMS-controlled child pages.
-   * Pages with showInNav: true and a parent are
-   * automatically placed under that parent.
+   * Pages that have been assigned a parent
+   * in Decap CMS.
    */
-  eleventyConfig.addCollection("childPages", function(collectionApi) {
+  eleventyConfig.addCollection("navigationPages", function(collectionApi) {
     return collectionApi
       .getAll()
       .filter(item => {
-        return item.data &&
-          item.data.parent &&
-          item.data.parent !== "None" &&
-          item.data.showInNav !== false;
+        const data = item.data || {};
+
+        return (
+          item.inputPath &&
+          item.inputPath.includes("/pages/") &&
+          data.showInNav !== false &&
+          data.parent &&
+          data.parent !== "None"
+        );
       });
   });
 
