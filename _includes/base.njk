@@ -38,6 +38,7 @@
   }
 })();
 </script>
+
 </head>
 
 <body>
@@ -47,163 +48,205 @@
   <span>Pakistan Zindabad</span>
 </div>
 
+
 <nav class="nav" aria-label="Primary navigation">
 
-<a href="/" class="logo-link">
-  <img
-    src="/assets/logos/header-logo.png"
-    alt="Local Councils Associations of Pakistan"
-    class="header-logo"
+  <a href="/" class="logo-link">
+    <img
+      src="/assets/logos/header-logo.png"
+      alt="Local Councils Associations of Pakistan"
+      class="header-logo"
+    >
+    <span class="logo">LCAs of Pakistan</span>
+  </a>
+
+
+  <button
+    class="menu-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="primary-menu"
+    aria-label="Open menu"
   >
-  <span class="logo">LCAs of Pakistan</span>
-</a>
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
-<button
-  class="menu-toggle"
-  type="button"
-  aria-expanded="false"
-  aria-controls="primary-menu"
-  aria-label="Open menu"
->
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
 
-<div class="nav-menu" id="primary-menu">
+  <div class="nav-menu" id="primary-menu">
 
-<div class="nav-links">
+    <div class="nav-links">
 
-{% for item in nav.items %}
+      {% for item in nav.items %}
 
-  {% set children = collections.navigationPages | where("data.parent", item.label) %}
+        {# Find CMS pages whose parent matches this menu item #}
 
-  {% if children.length > 0 %}
+        {% set children = [] %}
 
-    <div class="nav-dropdown">
+        {% for child in collections.navigationPages %}
 
-      <div class="nav-dropdown-main">
+          {% if child.data.parent == item.label %}
 
-        <a href="{{ item.url }}"
-           {% if item.url == page.url %}class="active"{% endif %}>
-          {{ item.label }}
-        </a>
+            {% set children = children.concat([child]) %}
 
-        <button
-          class="dropdown-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-label="Open {{ item.label }} submenu">
-          <span>▾</span>
-        </button>
-
-      </div>
-
-      <div class="dropdown-menu">
-
-        {% for child in children %}
-
-          <a
-            href="{{ child.url }}"
-            {% if child.url == page.url %}class="active"{% endif %}>
-            {{ child.data.menuLabel or child.data.title }}
-          </a>
+          {% endif %}
 
         {% endfor %}
 
-      </div>
+
+        {% if children.length > 0 %}
+
+          <div class="nav-dropdown">
+
+            <div class="nav-dropdown-main">
+
+              <a
+                href="{{ item.url }}"
+                {% if item.url == page.url %}class="active"{% endif %}
+              >
+                {{ item.label }}
+              </a>
+
+              <button
+                class="dropdown-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-label="Open {{ item.label }} submenu"
+              >
+                <span>▾</span>
+              </button>
+
+            </div>
+
+
+            <div class="dropdown-menu">
+
+              {% for child in children %}
+
+                <a
+                  href="{{ child.url }}"
+                  {% if child.url == page.url %}class="active"{% endif %}
+                >
+                  {{ child.data.menuLabel or child.data.title }}
+                </a>
+
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+
+        {% else %}
+
+          <a
+            href="{{ item.url }}"
+            {% if item.url == page.url %}class="active"{% endif %}
+          >
+            {{ item.label }}
+          </a>
+
+        {% endif %}
+
+      {% endfor %}
 
     </div>
 
-  {% else %}
 
-    <a href="{{ item.url }}"
-       {% if item.url == page.url %}class="active"{% endif %}>
-      {{ item.label }}
+    <a
+      href="https://www.youtube.com/@LCATVPAKISTAN"
+      target="_blank"
+      rel="noopener"
+      class="nav-cta"
+    >
+      Watch LCA TV ▶
     </a>
 
-  {% endif %}
+  </div>
 
-{% endfor %}
-
-</div>
-
-<a
-  href="https://www.youtube.com/@LCATVPAKISTAN"
-  target="_blank"
-  rel="noopener"
-  class="nav-cta"
->
-  Watch LCA TV ▶
-</a>
-
-</div>
 </nav>
+
 
 {{ content | safe }}
 
+
 <footer class="footer" id="contact-footer">
 
-<div class="footer-grid">
+  <div class="footer-grid">
 
-<div>
-<h4>ADLG</h4>
-<p style="font-size:0.85rem;">
-The Unified National Voice of Local Governments in Pakistan.
-</p>
-</div>
+    <div>
+      <h4>ADLG</h4>
+      <p style="font-size:0.85rem;">
+        The Unified National Voice of Local Governments in Pakistan.
+      </p>
+    </div>
 
-<div>
-<h4>Quick Links</h4>
-<ul>
-<li><a href="/about/">About Us</a></li>
-<li><a href="/advocacy/">Legal Advocacy</a></li>
-<li><a href="/resources/">Knowledge Hub</a></li>
-<li><a href="/partners/">Partners</a></li>
-</ul>
-</div>
 
-<div>
-<h4>Regional Offices</h4>
-<ul>
-<li>Lahore (LCAP)</li>
-<li>Karachi (LCAS)</li>
-<li>Peshawar (LCA-KP)</li>
-<li>Quetta / Muzaffarabad / Gilgit</li>
-</ul>
-</div>
+    <div>
+      <h4>Quick Links</h4>
 
-<div>
-<h4>Legal Info</h4>
-<ul>
-<li>SECP Sec 42 &amp; 32 Non-Profit Organisation</li>
-<li>
-<a href="mailto:info@adlg.org.pk">
-info@adlg.org.pk
-</a>
-</li>
-</ul>
-</div>
+      <ul>
+        <li><a href="/about/">About Us</a></li>
+        <li><a href="/advocacy/">Legal Advocacy</a></li>
+        <li><a href="/resources/">Knowledge Hub</a></li>
+        <li><a href="/partners/">Partners</a></li>
+      </ul>
+    </div>
 
-</div>
 
-<div class="footer-bottom">
-© {% year %} ADLG. All Rights Reserved. |
-Registered Non-Profit Organisation
-</div>
+    <div>
+      <h4>Regional Offices</h4>
+
+      <ul>
+        <li>Lahore (LCAP)</li>
+        <li>Karachi (LCAS)</li>
+        <li>Peshawar (LCA-KP)</li>
+        <li>Quetta / Muzaffarabad / Gilgit</li>
+      </ul>
+    </div>
+
+
+    <div>
+      <h4>Legal Info</h4>
+
+      <ul>
+        <li>
+          SECP Sec 42 &amp; 32 Non-Profit Organisation
+        </li>
+
+        <li>
+          <a href="mailto:info@adlg.org.pk">
+            info@adlg.org.pk
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+
+  <div class="footer-bottom">
+    © {% year %} ADLG. All Rights Reserved. |
+    Registered Non-Profit Organisation
+  </div>
 
 </footer>
 
+
 <script>
 
-(function(){
+(function () {
 
   const toggle = document.querySelector('.menu-toggle');
   const menu = document.getElementById('primary-menu');
 
   if (!toggle || !menu) return;
 
-  toggle.addEventListener('click', function(){
+
+  /* Main mobile menu */
+
+  toggle.addEventListener('click', function () {
 
     const open = menu.classList.toggle('is-open');
 
@@ -219,18 +262,25 @@ Registered Non-Profit Organisation
 
   });
 
-  /*
-   * Mobile dropdowns
-   */
+
+  /* Dropdown menus */
+
   document
     .querySelectorAll('.dropdown-toggle')
-    .forEach(function(button){
+    .forEach(function (button) {
 
-      button.addEventListener('click', function(){
+      button.addEventListener('click', function (event) {
 
-        const dropdown = button.closest('.nav-dropdown');
+        event.preventDefault();
+        event.stopPropagation();
 
-        const open = dropdown.classList.toggle('dropdown-open');
+        const dropdown =
+          button.closest('.nav-dropdown');
+
+        if (!dropdown) return;
+
+        const open =
+          dropdown.classList.toggle('dropdown-open');
 
         button.setAttribute(
           'aria-expanded',
@@ -241,15 +291,29 @@ Registered Non-Profit Organisation
 
     });
 
-  /*
-   * Close mobile navigation after
-   * clicking a normal link.
-   */
-  menu.querySelectorAll('a').forEach(function(link){
 
-    link.addEventListener('click', function(){
+  /* Close menu when a link is selected */
+
+  menu.querySelectorAll('a').forEach(function (link) {
+
+    link.addEventListener('click', function () {
 
       menu.classList.remove('is-open');
+
+      document
+        .querySelectorAll('.nav-dropdown')
+        .forEach(function (dropdown) {
+          dropdown.classList.remove('dropdown-open');
+        });
+
+      document
+        .querySelectorAll('.dropdown-toggle')
+        .forEach(function (button) {
+          button.setAttribute(
+            'aria-expanded',
+            'false'
+          );
+        });
 
       toggle.setAttribute(
         'aria-expanded',
@@ -268,6 +332,7 @@ Registered Non-Profit Organisation
 })();
 
 </script>
+
 
 {% for src in extraScripts %}
 <script src="{{ src }}"></script>
