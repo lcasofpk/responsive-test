@@ -81,12 +81,13 @@ collections:
   # =========================
   # WEBSITE PAGES
   # =========================
-  - name: "pages"
+    - name: "pages"
     label: "Website Pages"
     folder: "content/pages"
     create: true
     slug: "{{slug}}"
-    format: "md"
+    extension: "md"
+    format: "frontmatter"
 
     fields:
       - label: "Page Title"
@@ -121,7 +122,6 @@ collections:
           - "numbered-list"
         editor_components:
           - "image"
-
 
   # =========================
   # DOCUMENT / PDF REPOSITORY
