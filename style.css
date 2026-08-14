@@ -237,3 +237,126 @@ body{overflow-x:hidden;}
   .section{padding:42px 5%;}
   .news-card-media{width:calc(100% + 40px);margin:-20px -20px 16px;}
 }
+/* ---------- Navigation Dropdowns ---------- */
+
+.nav-dropdown{
+  position:relative;
+}
+
+.nav-dropdown-main{
+  display:flex;
+  align-items:center;
+}
+
+.nav-dropdown-main > a{
+  display:block;
+}
+
+.dropdown-toggle{
+  border:0;
+  background:transparent;
+  padding:4px 5px;
+  margin-left:2px;
+  color:var(--charcoal);
+  cursor:pointer;
+  font-size:.75rem;
+}
+
+.dropdown-menu{
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  min-width:210px;
+  background:#fff;
+  border:1px solid #eee;
+  border-radius:5px;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  padding:8px 0;
+  z-index:100;
+}
+
+.dropdown-menu a{
+  display:block;
+  padding:10px 16px;
+  white-space:nowrap;
+  color:var(--charcoal);
+  font-size:.88rem;
+  font-weight:600;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a.active{
+  background:var(--light);
+  color:var(--emerald);
+}
+
+/* Desktop: open dropdown when hovering */
+@media (min-width:901px){
+
+  .nav-dropdown:hover .dropdown-menu{
+    display:block;
+  }
+
+  .nav-dropdown:hover .dropdown-toggle{
+    color:var(--emerald);
+  }
+}
+
+
+/* ---------- Mobile Dropdowns ---------- */
+
+@media (max-width:900px){
+
+  .nav-dropdown{
+    width:100%;
+  }
+
+  .nav-dropdown-main{
+    display:flex;
+    align-items:center;
+    width:100%;
+    border-bottom:1px solid #f0f0f0;
+  }
+
+  .nav-dropdown-main > a{
+    flex:1;
+    border-bottom:0;
+  }
+
+  .dropdown-toggle{
+    width:42px;
+    height:42px;
+    font-size:1rem;
+    margin:0;
+  }
+
+  .dropdown-menu{
+    position:static;
+    display:none;
+    width:100%;
+    min-width:0;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    background:#f8f9fa;
+    padding:0 0 4px 14px;
+  }
+
+  .nav-dropdown.dropdown-open .dropdown-menu{
+    display:block;
+  }
+
+  .nav-dropdown.dropdown-open .dropdown-toggle span{
+    display:inline-block;
+    transform:rotate(180deg);
+  }
+
+  .dropdown-menu a{
+    padding:9px 12px;
+    border-bottom:1px solid #e9ecef;
+    white-space:normal;
+    font-size:.9rem;
+  }
+
+}
