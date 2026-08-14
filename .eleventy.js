@@ -23,8 +23,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ ".assetsignore": ".assetsignore" });
 
   eleventyConfig.addCollection("newsPosts", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("content/news/*.md").sort((a, b) => b.date - a.date);
-  });
+  return collectionApi.getFilteredByGlob("news/*.md").sort((a, b) => b.date - a.date);
+});
 
   return {
     dir: {
