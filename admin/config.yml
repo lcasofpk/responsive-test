@@ -10,9 +10,6 @@ public_folder: "/assets/uploads"
 
 collections:
 
-  # =========================
-  # NEWS & EVENTS
-  # =========================
   - name: "news"
     label: "News & Events"
     folder: "content/news"
@@ -22,7 +19,6 @@ collections:
       - "date"
       - "title"
       - "tag"
-
     fields:
       - label: "Title"
         name: "title"
@@ -55,7 +51,6 @@ collections:
         name: "featuredImage"
         widget: "image"
         required: false
-        hint: "Recommended card size: around 800×450 px."
 
       - label: "Image Alt Text"
         name: "featuredImageAlt"
@@ -66,7 +61,6 @@ collections:
         name: "permalink"
         widget: "string"
         required: false
-        hint: "Leave blank to use the automatic /news/slug/ URL."
 
       - label: "Layout"
         name: "layout"
@@ -78,10 +72,7 @@ collections:
         widget: "markdown"
 
 
-  # =========================
-  # WEBSITE PAGES
-  # =========================
-    - name: "pages"
+  - name: "pages"
     label: "Website Pages"
     folder: "content/pages"
     create: true
@@ -123,21 +114,17 @@ collections:
         editor_components:
           - "image"
 
-  # =========================
-  # DOCUMENT / PDF REPOSITORY
-  # =========================
+
   - name: "documents"
     label: "Document / PDF Repository"
     files:
       - file: "documents.json"
         name: "documents"
         label: "Documents"
-
         fields:
           - label: "Documents"
             name: "items"
             widget: "list"
-
             fields:
               - label: "Title"
                 name: "title"
@@ -164,21 +151,16 @@ collections:
                 widget: "string"
 
 
-  # =========================
-  # LCA TV VIDEOS
-  # =========================
   - name: "videos"
     label: "LCA TV Videos"
     files:
       - file: "videos.json"
         name: "videos"
         label: "YouTube Videos"
-
         fields:
           - label: "Videos"
             name: "items"
             widget: "list"
-
             fields:
               - label: "Title"
                 name: "title"
@@ -189,16 +171,12 @@ collections:
                 widget: "string"
 
 
-  # =========================
-  # SOCIAL MEDIA
-  # =========================
   - name: "social"
     label: "Social Media Embeds"
     files:
       - file: "_data/social.json"
         name: "social"
         label: "Social Post Links"
-
         fields:
           - label: "X (Twitter) Handle"
             name: "twitterHandle"
@@ -221,21 +199,16 @@ collections:
             required: false
 
 
-  # =========================
-  # SITE SETTINGS
-  # =========================
   - name: "site"
     label: "Site Settings"
     files:
       - file: "_data/nav.json"
         name: "navigation"
         label: "Navigation"
-
         fields:
           - label: "Navigation Items"
             name: "items"
             widget: "list"
-
             fields:
               - label: "Label"
                 name: "label"
