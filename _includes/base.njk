@@ -76,17 +76,16 @@
 
 {% for item in nav.items %}
 
-  {% set children = collections.childPages | selectattr("data.parent", "equalto", item.label) | list %}
+  {% set children = collections.navigationPages | where("data.parent", item.label) %}
 
   {% if children.length > 0 %}
 
     <div class="nav-dropdown">
 
       <div class="nav-dropdown-main">
-        <a
-          href="{{ item.url }}"
-          {% if item.url == page.url %}class="active"{% endif %}
-        >
+
+        <a href="{{ item.url }}"
+           {% if item.url == page.url %}class="active"{% endif %}>
           {{ item.label }}
         </a>
 
@@ -94,10 +93,10 @@
           class="dropdown-toggle"
           type="button"
           aria-expanded="false"
-          aria-label="Open {{ item.label }} submenu"
-        >
+          aria-label="Open {{ item.label }} submenu">
           <span>▾</span>
         </button>
+
       </div>
 
       <div class="dropdown-menu">
@@ -106,8 +105,7 @@
 
           <a
             href="{{ child.url }}"
-            {% if child.url == page.url %}class="active"{% endif %}
-          >
+            {% if child.url == page.url %}class="active"{% endif %}>
             {{ child.data.menuLabel or child.data.title }}
           </a>
 
@@ -119,10 +117,8 @@
 
   {% else %}
 
-    <a
-      href="{{ item.url }}"
-      {% if item.url == page.url %}class="active"{% endif %}
-    >
+    <a href="{{ item.url }}"
+       {% if item.url == page.url %}class="active"{% endif %}>
       {{ item.label }}
     </a>
 
