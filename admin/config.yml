@@ -31,16 +31,45 @@ collections:
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "pages"
+      - name: "website_pages"
     label: "Website Pages"
     folder: "content/pages"
     create: true
     slug: "{{slug}}"
+    format: "md"
     fields:
-      - { label: "Page Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text", required: false }
-      - { label: "Permalink", name: "permalink", widget: "string", hint: "Example: /about/index.html. Keep the existing URL when editing an existing page." }
-      - { label: "Layout", name: "layout", widget: "hidden", default: "base.njk" }
-      - { label: "Page Content", name: "body", widget: "markdown" }
+      - label: "Page Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Permalink"
+        name: "permalink"
+        widget: "string"
+        hint: "Keep the existing URL when editing an existing page."
+        required: false
+
+      - label: "Page Content"
+        name: "body"
+        widget: "markdown"
+        modes:
+          - "rich_text"
+          - "raw"
+        buttons:
+          - "bold"
+          - "italic"
+          - "link"
+          - "heading-two"
+          - "heading-three"
+          - "quote"
+          - "bulleted-list"
+          - "numbered-list"
+        editor_components:
+          - "image"
 
   - name: "documents"
     label: "Document / PDF Repository"
