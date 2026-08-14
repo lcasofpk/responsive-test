@@ -1,17 +1,22 @@
 module.exports = function(eleventyConfig) {
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
 
-  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const MONTHS = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
   eleventyConfig.addFilter("date", (dateObj) => {
     const d = new Date(dateObj);
     return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
   });
 
-  // Turns plain text with blank-line-separated paragraphs into <p> tags,
-  // for simple text blocks in the CMS page builder.
   eleventyConfig.addFilter("nl2p", (text) => {
     if (!text) return "";
-    return text.split(/\n\s*\n/).map(p => `<p>${p.trim()}</p>`).join("\n");
+    return text
+      .split(/\n\s*\n/)
+      .map(p => `<p>${p.trim()}</p>`)
+      .join("\n");
   });
 
   eleventyConfig.addPassthroughCopy("style.css");
@@ -23,15 +28,31 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ ".assetsignore": ".assetsignore" });
 
   eleventyConfig.addCollection("newsPosts", function(collectionApi) {
-  return collectionApi
-    .getAll()
-    .filter(item => {
-      return item.inputPath &&
-             item.inputPath.includes("/news/") &&
-             item.inputPath.endsWith(".md");
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-});
+    return collectionApi
+      .getAll()
+      .filter(item => {
+        return item.inputPath &&
+          item.inputPath.includes("/news/") &&
+          item.inputPath.endsWith(".md");
+      })
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  });
+
+  /*
+   * CMS-controlled child pages.
+   * Pages with showInNav: true and a parent are
+   * automatically placed under that parent.
+   */
+  eleventyConfig.addCollection("childPages", function(collectionApi) {
+    return collectionApi
+      .getAll()
+      .filter(item => {
+        return item.data &&
+          item.data.parent &&
+          item.data.parent !== "None" &&
+          item.data.showInNav !== false;
+      });
+  });
 
   return {
     dir: {
