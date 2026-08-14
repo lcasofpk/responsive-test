@@ -39,8 +39,8 @@ module.exports = function(eleventyConfig) {
   });
 
   /*
-   * Pages that have been assigned a parent
-   * in Decap CMS.
+   * All CMS pages that are assigned
+   * to a parent menu.
    */
   eleventyConfig.addCollection("navigationPages", function(collectionApi) {
     return collectionApi
@@ -51,7 +51,7 @@ module.exports = function(eleventyConfig) {
         return (
           item.inputPath &&
           item.inputPath.includes("/pages/") &&
-          data.showInNav !== false &&
+          data.showInNav === true &&
           data.parent &&
           data.parent !== "None"
         );
