@@ -10,15 +10,21 @@ public_folder: "/assets/uploads"
 
 collections:
 
+  # =====================================
+  # NEWS & EVENTS
+  # =====================================
+
   - name: "news"
     label: "News & Events"
     folder: "content/news"
     create: true
     slug: "{{slug}}"
+
     sortable_fields:
       - "date"
       - "title"
       - "tag"
+
     fields:
       - label: "Title"
         name: "title"
@@ -51,6 +57,7 @@ collections:
         name: "featuredImage"
         widget: "image"
         required: false
+        hint: "Recommended card size: around 800×450 px."
 
       - label: "Image Alt Text"
         name: "featuredImageAlt"
@@ -61,6 +68,7 @@ collections:
         name: "permalink"
         widget: "string"
         required: false
+        hint: "Leave blank to use the automatic /news/slug/ URL."
 
       - label: "Layout"
         name: "layout"
@@ -71,6 +79,9 @@ collections:
         name: "body"
         widget: "markdown"
 
+  # =====================================
+  # WEBSITE PAGES
+  # =====================================
 
   - name: "pages"
     label: "Website Pages"
@@ -85,6 +96,12 @@ collections:
         name: "title"
         widget: "string"
 
+      - label: "Menu Label"
+        name: "menuLabel"
+        widget: "string"
+        required: false
+        hint: "Optional. Leave blank to use the Page Title."
+
       - label: "Description"
         name: "description"
         widget: "text"
@@ -95,6 +112,24 @@ collections:
         widget: "string"
         required: false
         hint: "Keep the existing URL when editing an existing page."
+
+      - label: "Parent Menu"
+        name: "parent"
+        widget: "select"
+        required: false
+        default: "None"
+        options:
+          - "None"
+          - "About Us"
+          - "Our Work"
+          - "Advocacy"
+          - "Partners"
+          - "Resources"
+
+      - label: "Show in Navigation"
+        name: "showInNav"
+        widget: "boolean"
+        default: true
 
       - label: "Page Content"
         name: "body"
@@ -108,23 +143,30 @@ collections:
           - "link"
           - "heading-two"
           - "heading-three"
+          - "heading-four"
           - "quote"
           - "bulleted-list"
           - "numbered-list"
         editor_components:
           - "image"
 
+  # =====================================
+  # DOCUMENT / PDF REPOSITORY
+  # =====================================
 
   - name: "documents"
     label: "Document / PDF Repository"
+
     files:
       - file: "documents.json"
         name: "documents"
         label: "Documents"
+
         fields:
           - label: "Documents"
             name: "items"
             widget: "list"
+
             fields:
               - label: "Title"
                 name: "title"
@@ -150,17 +192,23 @@ collections:
                 name: "url"
                 widget: "string"
 
+  # =====================================
+  # LCA TV VIDEOS
+  # =====================================
 
   - name: "videos"
     label: "LCA TV Videos"
+
     files:
       - file: "videos.json"
         name: "videos"
         label: "YouTube Videos"
+
         fields:
           - label: "Videos"
             name: "items"
             widget: "list"
+
             fields:
               - label: "Title"
                 name: "title"
@@ -170,13 +218,18 @@ collections:
                 name: "youtubeId"
                 widget: "string"
 
+  # =====================================
+  # SOCIAL MEDIA
+  # =====================================
 
   - name: "social"
     label: "Social Media Embeds"
+
     files:
       - file: "_data/social.json"
         name: "social"
         label: "Social Post Links"
+
         fields:
           - label: "X (Twitter) Handle"
             name: "twitterHandle"
@@ -198,17 +251,23 @@ collections:
             widget: "string"
             required: false
 
+  # =====================================
+  # SITE SETTINGS
+  # =====================================
 
   - name: "site"
     label: "Site Settings"
+
     files:
       - file: "_data/nav.json"
         name: "navigation"
         label: "Navigation"
+
         fields:
           - label: "Navigation Items"
             name: "items"
             widget: "list"
+
             fields:
               - label: "Label"
                 name: "label"
