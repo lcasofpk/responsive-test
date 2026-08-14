@@ -3,73 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>{{ title }} | LCAs - Local Councils Associations of Pakistan</title>
+
 <meta name="description" content="{{ description }}">
+
 <link rel="icon" type="image/png" href="/assets/logos/header-logo.png">
 <link rel="stylesheet" href="/style.css">
-{% if ogImage %}<meta property="og:image" content="{{ ogImage }}">{% endif %}
+
+{% if ogImage %}
+<meta property="og:image" content="{{ ogImage }}">
+{% endif %}
+
 <meta property="og:title" content="{{ title }} | LCAs of Pakistan">
 <meta property="og:description" content="{{ description }}">
 <meta property="og:type" content="website">
+
 <meta name="twitter:card" content="summary_large_image">
+
 <script>
-  (function () {
-    var hash = window.location.hash;
-    if (hash && (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token') || hash.includes('email_change_token'))) {
-      window.location.replace('/admin/' + hash);
-    }
-  })();
-</script>
-</head>
-<body>
-<div class="topbar"><span>SECP Registered Non-Profit Organisation</span><span>Pakistan Zindabad</span></div>
-<nav class="nav" aria-label="Primary navigation">
-<a href="/" class="logo-link">
-  <img src="/assets/logos/header-logo.png" alt="Local Councils Associations of Pakistan" class="header-logo">
-  <span class="logo">LCAs of Pakistan</span>
-</a>
-<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open menu">
-  <span></span><span></span><span></span>
-</button>
-<div class="nav-menu" id="primary-menu">
-  <div class="nav-links">
-  {% for item in nav.items %}
-  <a href="{{ item.url }}"{% if item.url == page.url %} class="active"{% endif %}>{{ item.label }}</a>
-  {% endfor %}
-  </div>
-  <a href="https://www.youtube.com/@LCATVPAKISTAN" target="_blank" rel="noopener" class="nav-cta">Watch LCA TV ▶</a>
-</div>
-</nav>
-{{ content | safe }}
-<footer class="footer" id="contact-footer">
-<div class="footer-grid">
-<div><h4>ADLG</h4><p style="font-size:0.85rem;">The Unified National Voice of Local Governments in Pakistan.</p></div>
-<div><h4>Quick Links</h4><ul><li><a href="/about/">About Us</a></li><li><a href="/advocacy/">Legal Advocacy</a></li><li><a href="/resources/">Knowledge Hub</a></li><li><a href="/partners/">Partners</a></li></ul></div>
-<div><h4>Regional Offices</h4><ul><li>Lahore (LCAP)</li><li>Karachi (LCAS)</li><li>Peshawar (LCA-KP)</li><li>Quetta / Muzaffarabad / Gilgit</li></ul></div>
-<div><h4>Legal Info</h4><ul><li>SECP Sec 42 &amp; 32 Non-Profit Organisation</li><li><a href="mailto:info@adlg.org.pk">info@adlg.org.pk</a></li></ul></div>
-</div>
-<div class="footer-bottom">© {% year %} ADLG. All Rights Reserved. | Registered Non-Profit Organisation</div>
-</footer>
-<script>
-(function(){
-  const toggle = document.querySelector('.menu-toggle');
-  const menu = document.getElementById('primary-menu');
-  if (!toggle || !menu) return;
-  toggle.addEventListener('click', function(){
-    const open = menu.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  });
-  menu.querySelectorAll('a').forEach(function(link){
-    link.addEventListener('click', function(){
-      menu.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded','false');
-      toggle.setAttribute('aria-label','Open menu');
-    });
-  });
+(function () {
+  var hash = window.location.hash;
+
+  if (
+    hash &&
+    (
+      hash.includes('invite_token') ||
+      hash.includes('recovery_token') ||
+      hash.includes('confirmation_token') ||
+      hash.includes('email_change_token')
+    )
+  ) {
+    window.location.replace('/admin/' + hash);
+  }
 })();
 </script>
-{% for src in extraScripts %}<script src="{{ src }}"></script>
+</head>
+
+<body>
+
+<div class="topbar">
+  <span>SECP Registered Non-Profit Organisation</span>
+  <span>Pakistan Zindabad</span>
+</div>
+
+<nav class="nav" aria-label="Primary navigation">
+
+<a href="/" class="logo-link">
+  <img
+    src="/assets/logos/header-logo.png"
+    alt="Local Councils Associations of Pakistan"
+    class="header-logo"
+  >
+  <span class="logo">LCAs of Pakistan</span>
+</a>
+
+<button
+  class="menu-toggle"
+  type="button"
+  aria-expanded="false"
+  aria-controls="primary-menu"
+  aria-label="Open menu"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="nav-menu" id="primary-menu">
+
+<div class="nav-links">
+
+{% for item in nav.items %}
+
+  {% set children = collections.childPages | selectattr("data.parent", "equalto", item.label) | list %}
+
+  {% if children.length > 0 %}
+
+    <div class="nav-dropdown">
+
+      <div class="nav-dropdown-main">
+        <a
+          href="{{ item.url }}"
+          {% if item.url == page.url %}class="active"{% endif %}
+        >
+          {{ item.label }}
+        </a>
+
+        <button
+          class="dropdown-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-label="Open {{ item.label }} submenu"
+        >
+          <span>▾</span>
+        </button>
+      </div>
+
+      <div class="dropdown-menu">
+
+        {% for child in children %}
+
+          <a
+            href="{{ child.url }}"
+            {% if child.url == page.url %}class="active"{% endif %}
+          >
+            {{ child.data.menuLabel or child.data.title }}
+          </a>
+
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  {% else %}
+
+    <a
+      href="{{ item.url }}"
+      {% if item.url == page.url %}class="active"{% endif %}
+    >
+      {{ item.label }}
+    </a>
+
+  {% endif %}
+
 {% endfor %}
+
+</div>
+
+<a
+  href="https://www.youtube.com/@LCATVPAKISTAN"
+  target="_blank"
+  rel="noopener"
+  class="nav-cta"
+>
+  Watch LCA TV ▶
+</a>
+
+</div>
+</nav>
+
+{{ content | safe }}
+
+<footer class="footer" id="contact-footer">
+
+<div class="footer-grid">
+
+<div>
+<h4>ADLG</h4>
+<p style="font-size:0.85rem;">
+The Unified National Voice of Local Governments in Pakistan.
+</p>
+</div>
+
+<div>
+<h4>Quick Links</h4>
+<ul>
+<li><a href="/about/">About Us</a></li>
+<li><a href="/advocacy/">Legal Advocacy</a></li>
+<li><a href="/resources/">Knowledge Hub</a></li>
+<li><a href="/partners/">Partners</a></li>
+</ul>
+</div>
+
+<div>
+<h4>Regional Offices</h4>
+<ul>
+<li>Lahore (LCAP)</li>
+<li>Karachi (LCAS)</li>
+<li>Peshawar (LCA-KP)</li>
+<li>Quetta / Muzaffarabad / Gilgit</li>
+</ul>
+</div>
+
+<div>
+<h4>Legal Info</h4>
+<ul>
+<li>SECP Sec 42 &amp; 32 Non-Profit Organisation</li>
+<li>
+<a href="mailto:info@adlg.org.pk">
+info@adlg.org.pk
+</a>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div class="footer-bottom">
+© {% year %} ADLG. All Rights Reserved. |
+Registered Non-Profit Organisation
+</div>
+
+</footer>
+
+<script>
+
+(function(){
+
+  const toggle = document.querySelector('.menu-toggle');
+  const menu = document.getElementById('primary-menu');
+
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener('click', function(){
+
+    const open = menu.classList.toggle('is-open');
+
+    toggle.setAttribute(
+      'aria-expanded',
+      open ? 'true' : 'false'
+    );
+
+    toggle.setAttribute(
+      'aria-label',
+      open ? 'Close menu' : 'Open menu'
+    );
+
+  });
+
+  /*
+   * Mobile dropdowns
+   */
+  document
+    .querySelectorAll('.dropdown-toggle')
+    .forEach(function(button){
+
+      button.addEventListener('click', function(){
+
+        const dropdown = button.closest('.nav-dropdown');
+
+        const open = dropdown.classList.toggle('dropdown-open');
+
+        button.setAttribute(
+          'aria-expanded',
+          open ? 'true' : 'false'
+        );
+
+      });
+
+    });
+
+  /*
+   * Close mobile navigation after
+   * clicking a normal link.
+   */
+  menu.querySelectorAll('a').forEach(function(link){
+
+    link.addEventListener('click', function(){
+
+      menu.classList.remove('is-open');
+
+      toggle.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      toggle.setAttribute(
+        'aria-label',
+        'Open menu'
+      );
+
+    });
+
+  });
+
+})();
+
+</script>
+
+{% for src in extraScripts %}
+<script src="{{ src }}"></script>
+{% endfor %}
+
 </body>
 </html>
