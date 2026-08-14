@@ -1,8 +1,9 @@
 ---
-title: "Advocacy & Legal Action"
-description: "ADLG's legal milestones and legislative reform agenda."
-permalink: "/advocacy/index.html"
+title: Actions
+description: LCA's milestones and reform agenda.
+permalink: /actions/index.html
 layout: base.njk
+showInNav: true
 ---
 <div class="page-hero"><h1>Advocacy &amp; Legal Action</h1><p>Serving as a constitutional watchdog for local democracy in Pakistan.</p></div>
 <section class="section">
