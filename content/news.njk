@@ -1,0 +1,64 @@
+---
+title: "News & Events"
+description: "News, press releases, project updates, announcements and events from the Local Councils Associations of Pakistan."
+permalink: "/news/index.html"
+---
+<div class="page-hero"><h1>News &amp; Events</h1><p>Updates, announcements, project stories, press releases and events.</p></div>
+
+<section class="section">
+  <div class="news-toolbar">
+    <label for="news-date-filter">Filter by date:</label>
+    <select id="news-date-filter">
+      <option value="all">All dates</option>
+      {% for post in collections.newsPosts %}
+        <option value="{{ post.date | date }}">{{ post.date | date }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="news-grid" id="news-grid">
+    {% for post in collections.newsPosts %}
+      <a href="{{ post.url }}" class="news-card" data-news-date="{{ post.date | date }}">
+        {% if post.data.featuredImage %}
+          <img class="news-card-media" src="{{ post.data.featuredImage }}" alt="{{ post.data.featuredImageAlt or post.data.title }}" loading="lazy">
+        {% endif %}
+        <span class="tag">{{ post.data.tag }}</span>
+        <h4>{{ post.data.title }}</h4>
+        <p>{{ post.data.excerpt }}</p>
+        <time class="news-card-date" datetime="{{ post.date | date }}">{{ post.date | date }}</time>
+      </a>
+    {% else %}
+      <p class="news-empty">No news or events yet.</p>
+    {% endfor %}
+  </div>
+  <p id="news-empty" class="news-empty" hidden>No items match this date.</p>
+</section>
+
+<section class="section section-alt">
+  <h2>Follow LCA Updates</h2>
+  <p style="text-align:center;max-width:700px;margin:0 auto 24px;color:#666;">
+    For day-to-day updates, follow the Local Councils Associations on their social channels and LCA TV.
+  </p>
+  <div class="btn-row" style="justify-content:center;">
+    <a class="btn btn-navy" href="https://www.youtube.com/@LCATVPAKISTAN" target="_blank" rel="noopener">LCA TV on YouTube</a>
+  </div>
+</section>
+
+<script>
+(function(){
+  const select = document.getElementById('news-date-filter');
+  const grid = document.getElementById('news-grid');
+  const empty = document.getElementById('news-empty');
+  if(!select || !grid) return;
+  select.addEventListener('change', function(){
+    const cards = Array.from(grid.querySelectorAll('.news-card'));
+    let visible = 0;
+    cards.forEach(function(card){
+      const show = this.value === 'all' || card.dataset.newsDate === this.value;
+      card.hidden = !show;
+      if(show) visible++;
+    }, this);
+    if(empty) empty.hidden = visible !== 0;
+  });
+})();
+</script>

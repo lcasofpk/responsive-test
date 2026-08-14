@@ -1,0 +1,16 @@
+---
+layout: base.njk
+---
+<div class="page-hero">
+  <h1>{{ title }}</h1>
+  <p>{{ date | date }} &middot; {{ tag }}</p>
+</div>
+<section class="section">
+<div class="news-body">
+{% if featuredImage %}
+<img class="news-detail-media" src="{{ featuredImage }}" alt="{{ featuredImageAlt or title }}">
+{% endif %}
+{{ content | safe }}
+<p style="margin-top:30px;"><a href="/news/" class="btn btn-navy">&larr; Back to News &amp; Events</a></p>
+</div>
+</section>

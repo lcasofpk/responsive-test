@@ -1,0 +1,48 @@
+---
+layout: base.njk
+---
+<div class="page-hero"><h1>{{ heroTitle or title }}</h1><p>{{ heroSubtitle }}</p></div>
+{% for section in sections %}
+<section class="section{% if loop.index is even %} section-alt{% endif %}">
+{% if section.heading %}<h2>{{ section.heading }}</h2>{% endif %}
+
+{% if section.type == "text" %}
+<div style="max-width:850px;margin:0 auto;">{{ section.body | nl2p | safe }}</div>
+
+{% elif section.type == "cards" %}
+<div class="action-grid">
+{% for c in section.items %}
+<div class="action-card">{% if c.icon %}<div class="icon">{{ c.icon }}</div>{% endif %}<h4>{{ c.title }}</h4><p>{{ c.text }}</p></div>
+{% endfor %}
+</div>
+
+{% elif section.type == "pillars" %}
+<div class="pillars">
+{% for p in section.items %}
+<div class="pillar-card"><h3>{{ p.title }}</h3><p>{{ p.text }}</p></div>
+{% endfor %}
+</div>
+
+{% elif section.type == "donors" %}
+<div class="donor-grid">
+{% for d in section.items %}
+<div class="donor-card"><h4>{{ d.title }}</h4><p>{{ d.text }}</p></div>
+{% endfor %}
+</div>
+
+{% elif section.type == "timeline" %}
+<div class="timeline">
+{% for t in section.items %}
+<div class="timeline-item"><div class="year">{{ t.year }}</div><h4>{{ t.title }}</h4><p>{{ t.text }}</p></div>
+{% endfor %}
+</div>
+
+{% elif section.type == "simplegrid" %}
+<div class="grid">
+{% for g in section.items %}
+<div class="card"><h4>{{ g.title }}</h4>{% if g.text %}<p>{{ g.text }}</p>{% endif %}</div>
+{% endfor %}
+</div>
+{% endif %}
+</section>
+{% endfor %}

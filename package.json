@@ -1,0 +1,12 @@
+{
+  "name": "adlg-website",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "eleventy && wrangler pages functions build --outdir=_site/_worker.js/",
+    "serve": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "wrangler": "^4.123.0"
+  }
+}

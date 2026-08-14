@@ -1,0 +1,126 @@
+---
+title: "Home"
+description: "The unified national voice of local governments in Pakistan."
+extraScripts:
+  - "/script.js"
+---
+<section class="hero">
+  <!-- Left Side: Content -->
+  <div class="hero-left">
+    <h1>UNITING LOCAL VOICES, <span>EMPOWERING COMMUNITIES.</span></h1>
+    <p>
+      The Association for Development of Local Governance (ADLG) represents all 
+      provincial, Azad Jammu &amp; Kashmir, and Gilgit-Baltistan Local Councils Associations. 
+      We bridge local communities and decision-makers to build inclusive, self-sustaining local democracy.
+    </p>
+    <div class="btn-row">
+      <a href="/regional-alliance/" class="btn btn-primary">Explore Regional Alliance</a>
+    </div>
+  </div>
+
+  <!-- Right Side: Logo/Graphic -->
+  <div class="hero-right">
+    <img 
+      src="/assets/logos/lcas-network-graphic.png" 
+      alt="ADLG network of Local Councils Associations across Pakistan"
+      class="hero-logo"
+    />
+  </div>
+</section>
+<!-- Wrap in <section class="section"> so it centers & constrains max-width -->
+<section class="section">
+  <h2>Latest News &amp; Events</h2>
+  <div class="news-toolbar" aria-label="Filter latest news and events">
+    <label for="home-news-date">Date:</label>
+    <select id="home-news-date">
+      <option value="all">All recent dates</option>
+      {% for post in collections.newsPosts.slice(0, 6) %}
+        <option value="{{ post.date | date }}">{{ post.date | date }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="news-grid" id="home-news-grid">
+    {% for post in collections.newsPosts.slice(0, 6) %}
+      <a href="{{ post.url }}" class="news-card" data-news-date="{{ post.date | date }}">
+        {% if post.data.featuredImage %}
+          <img class="news-card-media" src="{{ post.data.featuredImage }}" alt="{{ post.data.featuredImageAlt or post.data.title }}" loading="lazy">
+        {% endif %}
+        <span class="tag">{{ post.data.tag }}</span>
+        <h4>{{ post.data.title }}</h4>
+        <p>{{ post.data.excerpt }}</p>
+        <time class="news-card-date" datetime="{{ post.date | date }}">{{ post.date | date }}</time>
+      </a>
+    {% else %}
+      <p class="news-empty">No news or events have been published yet.</p>
+    {% endfor %}
+  </div>
+  <p id="home-news-empty" class="news-empty" hidden>No items match this date.</p>
+  <p style="text-align:center;margin-top:24px;">
+    <a href="/news/" class="btn btn-navy">View All News &amp; Events</a>
+  </p>
+</section>
+<script>
+(function(){
+  const select = document.getElementById('home-news-date');
+  const grid = document.getElementById('home-news-grid');
+  const empty = document.getElementById('home-news-empty');
+  if(!select || !grid) return;
+  select.addEventListener('change', function(){
+    const cards = Array.from(grid.querySelectorAll('.news-card'));
+    let visible = 0;
+    cards.forEach(function(card){
+      const show = this.value === 'all' || card.dataset.newsDate === this.value;
+      card.hidden = !show;
+      if(show) visible++;
+    }, this);
+    if(empty) empty.hidden = visible !== 0;
+  });
+})();
+</script>
+<section class="section">
+<h2>LCA TV — Latest Videos</h2>
+<div class="video-grid" id="video-grid" data-limit="3" data-more-link="/resources/"></div>
+<p style="text-align:center;margin-top:24px;"><a href="/resources/" class="btn btn-navy">Watch More on Resources</a></p>
+</section>
+<section class="section section-alt">
+<h2>Find a Document Fast</h2>
+<div class="search-bar"><input type="text" id="doc-search" placeholder="Search Legal Acts, Toolkits, and more..."></div>
+<p class="doc-count" id="doc-count"></p>
+<div class="grid" id="doc-results" data-limit="4" data-more-link="/resources/"></div>
+</section>
+<section class="section">
+<h2>Two-Pillar Governance Model</h2>
+<div class="pillars">
+<div class="pillar-card"><h3>🏛 Political Wing</h3><p>Governance &amp; representation — General Body, Board of Governors, Executive Committee, and Presidency, setting the vision and policy agenda.</p></div>
+<div class="pillar-card"><h3>⚙️ Administrative &amp; Program Wings</h3><p>Execution &amp; operations — led by the CEO and Program Manager, managing finance, M&amp;E, advocacy, and donor-funded projects.</p></div>
+</div>
+</section>
+<div class="stats">
+<div class="stat"><div class="num">145</div><div class="label">Districts Covered</div></div>
+<div class="stat"><div class="num">550</div><div class="label">Tehsils Reached</div></div>
+<div class="stat"><div class="num">6,000+</div><div class="label">Union Councils</div></div>
+<div class="stat"><div class="num">100,000+</div><div class="label">Elected Local Representatives</div></div>
+</div>
+<section class="section section-alt">
+<h2>Regional Network</h2>
+<div class="grid">
+<a href="/regional-alliance/#lcap" class="card" style="text-align:center;"><img src="/assets/logos/lca-punjab.png" alt="LCAP" style="width:64px;margin:0 auto 10px;"><h4>LCA Punjab (LCAP)</h4><p>Representing council leadership across Punjab.</p></a>
+<a href="/regional-alliance/#lcas" class="card" style="text-align:center;"><img src="/assets/logos/lca-sindh.png" alt="LCAS" style="width:64px;margin:0 auto 10px;"><h4>LCA Sindh (LCAS)</h4><p>Advocating for local councils across Sindh.</p></a>
+<a href="/regional-alliance/#lcakp" class="card" style="text-align:center;"><img src="/assets/logos/lca-kp.png" alt="LCA-KP" style="width:64px;margin:0 auto 10px;"><h4>LCA Khyber Pakhtunkhwa (LCA-KP)</h4><p>Driving municipal empowerment in KP.</p></a>
+<a href="/regional-alliance/#lcab" class="card" style="text-align:center;"><img src="/assets/logos/lca-balochistan.png" alt="LCAB" style="width:64px;margin:0 auto 10px;"><h4>LCA Balochistan (LCAB)</h4><p>Strengthening representatives across Balochistan.</p></a>
+<a href="/regional-alliance/#lcaajk" class="card" style="text-align:center;"><img src="/assets/logos/lca-ajk.png" alt="LCA-AJK" style="width:52px;margin:0 auto 10px;"><h4>LCA Azad Jammu &amp; Kashmir (LCA-AJK)</h4><p>Supporting local governance in AJK.</p></a>
+<a href="/regional-alliance/#lcagb" class="card" style="text-align:center;"><img src="/assets/logos/lca-gb.png" alt="LCAGB" style="width:64px;margin:0 auto 10px;"><h4>LCA Gilgit-Baltistan (LCA-GB)</h4><p>Connecting mountain council districts in GB.</p></a>
+<a href="/regional-alliance/#mci" class="card" style="text-align:center;"><h4>Metropolitan Corporation Islamabad (MCI)</h4><p>Representing capital municipal interests.</p></a>
+</div>
+</section>
+<section class="section">
+<h2>Key Pillars of Action</h2>
+<div class="action-grid">
+<div class="action-card"><div class="icon">🏛</div><h4>Policy Advocacy &amp; Legal Defense</h4><p>Safeguarding constitutional local government rights and defending against council suspensions.</p></div>
+<div class="action-card"><div class="icon">🛠</div><h4>Capacity Building &amp; Training</h4><p>Equipping councillors and mayors with skills in municipal budgeting, tax execution, and service delivery.</p></div>
+<div class="action-card"><div class="icon">🌍</div><h4>SDG Localization &amp; Sustainability</h4><p>Mainstreaming UN Sustainable Development Goals into local council development agendas.</p></div>
+<div class="action-card"><div class="icon">✊</div><h4>Inclusive Representation Networks</h4><p>Empowering underrepresented leadership — women, youth, minorities, transgender, traders, PWDs.</p></div>
+</div>
+</section>
+<div class="partners"><h3>Strategic Global Partners</h3><div class="partner-list"><span>European Union</span><span>GIZ</span><span>CLGF</span><span>UCLG ASPAC</span></div></div>

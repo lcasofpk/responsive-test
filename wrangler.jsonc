@@ -1,0 +1,9 @@
+{
+  "name": "lca-org-pk",
+  "compatibility_date": "2025-01-01",
+  "main": "./_site/_worker.js/index.js",
+  "assets": {
+    "directory": "./_site",
+    "binding": "ASSETS"
+  }
+}
