@@ -1,8 +1,10 @@
 ---
 title: Actions
+menuLabel: Actions
 description: LCA's milestones and reform agenda.
 permalink: /actions/index.html
 layout: base.njk
+parent: None
 showInNav: true
 ---
 <div class="page-hero"><h1>Advocacy &amp; Legal Action</h1><p>Serving as a constitutional watchdog for local democracy in Pakistan.</p></div>
