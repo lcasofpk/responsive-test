@@ -538,11 +538,11 @@ async function initDocSearch(){
     if(view === 'list'){
 
       results.classList.add(
-        'knowledge-list-view'
+        'document-list-view'
       );
 
       results.classList.remove(
-        'knowledge-grid'
+        'document-grid'
       );
 
       if(listButton){
@@ -556,11 +556,11 @@ async function initDocSearch(){
     }else{
 
       results.classList.add(
-        'knowledge-grid'
+        'document-grid'
       );
 
       results.classList.remove(
-        'knowledge-list-view'
+        'document-list-view'
       );
 
       if(gridButton){
@@ -634,11 +634,11 @@ async function initDocSearch(){
         currentView = 'list';
 
         results.classList.add(
-          'knowledge-list-view'
+          'document-list-view'
         );
 
         results.classList.remove(
-          'knowledge-grid'
+          'document-grid'
         );
 
         if(listButton){
