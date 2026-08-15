@@ -535,26 +535,44 @@ img{
    PARTNERS
 ========================================================= */
 
-.partners{
-  background:var(--light);
-  padding:40px 5%;
-  text-align:center;
+/* =====================================================
+   STRATEGIC GLOBAL PARTNERS
+===================================================== */
+
+.partner-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 30px auto 0;
 }
 
-.partners h3{
-  color:var(--navy);
-  font-size:1rem;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  margin-bottom:24px;
+.partner-list a {
+  width: 220px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding: 15px 20px;
+  box-sizing: border-box;
+  transition: transform .2s ease;
 }
 
-.partner-list{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:32px;
-  font-weight:700;
+.partner-list a:hover {
+  transform: translateY(-3px);
+}
+
+.partner-list img {
+  display: block;
+  max-width: 100%;
+  max-height: 90px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 }
 
 
