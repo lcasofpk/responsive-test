@@ -534,7 +534,18 @@ img{
 /* =========================================================
    PARTNERS
 ========================================================= */
+.partners{
+  background:var(--light);
+  padding:40px 5%;
+  text-align:center;
+}
 
+.partners h3{
+  color:var(--navy);
+  font-size:1rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:24px;
 /* =====================================================
    STRATEGIC GLOBAL PARTNERS
 ===================================================== */
