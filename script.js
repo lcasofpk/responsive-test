@@ -16,9 +16,6 @@ async function initDocSearch(){
   const previewLimit =
     parseInt(results.dataset.limit, 10) || 0;
 
-  const moreLink =
-    results.dataset.moreLink || '/knowledge-material/';
-
   const pagination =
     document.getElementById('doc-pagination');
 
@@ -453,42 +450,6 @@ async function initDocSearch(){
         );
 
       });
-
-
-      if(
-        showLimited &&
-        moreLink
-      ){
-
-        const more =
-          document.createElement('a');
-
-        more.href =
-          moreLink;
-
-        more.className =
-          'card knowledge-more-card';
-
-        more.innerHTML = `
-
-          <div class="knowledge-more-icon">
-            →
-          </div>
-
-          <h4>
-            View Complete Knowledge Material
-          </h4>
-
-          <p>
-            Browse the complete repository
-            of ${list.length} documents.
-          </p>
-
-        `;
-
-        results.appendChild(more);
-
-      }
 
 
       if(countEl){
