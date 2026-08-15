@@ -97,45 +97,38 @@ async function initDocSearch(){
       value.includes('act') ||
       value.includes('law')
     ){
-      return 'doc-category-legal';
-    }
-
-    if(
-      value.includes('report') ||
-      value.includes('research')
-    ){
-      return 'doc-category-report';
-    }
-
-    if(
-      value.includes('manual') ||
-      value.includes('guide')
-    ){
-      return 'doc-category-manual';
-    }
-
-    if(
-      value.includes('policy') ||
-      value.includes('brief')
-    ){
-      return 'doc-category-policy';
+      return 'category-legal-act';
     }
 
     if(
       value.includes('toolkit') ||
       value.includes('tool')
     ){
-      return 'doc-category-toolkit';
+      return 'category-toolkit';
     }
 
     if(
-      value.includes('training') ||
-      value.includes('capacity')
+      value.includes('policy') ||
+      value.includes('brief')
     ){
-      return 'doc-category-training';
+      return 'category-policy-brief';
     }
 
-    return 'doc-category-other';
+    if(
+      value.includes('report') ||
+      value.includes('research')
+    ){
+      return 'category-report';
+    }
+
+    if(
+      value.includes('manual') ||
+      value.includes('guide')
+    ){
+      return 'category-manual';
+    }
+
+    return 'category-other';
 
   }
 
@@ -204,7 +197,7 @@ async function initDocSearch(){
 
       card.innerHTML = `
 
-        <div class="document-category-label">
+        <div class="document-card-category">
           ${category}
         </div>
 
@@ -720,7 +713,6 @@ async function initDocSearch(){
   );
 
 }
-
 
 // =========================================================
 // YOUTUBE VIDEO GRID + MODAL PLAYER
