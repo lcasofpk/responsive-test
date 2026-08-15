@@ -1565,6 +1565,14 @@ table.acts-table tr:nth-child(even){
    KNOWLEDGE MATERIAL - MORE BUTTON
 ========================================================= */
 
+.knowledge-more{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:30px;
+  text-align:center;
+}
 .knowledge-more-btn{
   display:inline-flex;
   align-items:center;
