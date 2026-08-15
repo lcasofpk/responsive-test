@@ -1,52 +1,62 @@
 // =========================================================
-// DOCUMENT / PDF REPOSITORY
+// DOCUMENT / KNOWLEDGE MATERIALS REPOSITORY
 // =========================================================
 
 async function initDocSearch(){
 
   const input = document.getElementById('doc-search');
   const results = document.getElementById('doc-results');
-
-  if(!results) return;
-
   const countEl = document.getElementById('doc-count');
-  const categoryFilter = document.getElementById('doc-category-filter');
-  const pagination = document.getElementById('doc-pagination');
-  const viewButtons = document.querySelectorAll('.document-view-btn');
 
-  const previewLimit =
-    parseInt(results.dataset.limit || '0', 10);
+  if(!input || !results) return;
 
-  const moreLink =
-    results.dataset.moreLink || '';
-
-  const fullRepository =
+  const isFullRepository =
     results.dataset.fullRepository === 'true';
 
-  const perPage = 50;
+  const previewLimit =
+    parseInt(results.dataset.limit, 10) || 0;
+
+  const moreLink =
+    results.dataset.moreLink || '/knowledge-material/';
+
+  const pagination =
+    document.getElementById('doc-pagination');
+
+  const gridButton =
+    document.getElementById('doc-grid-view');
+
+  const listButton =
+    document.getElementById('doc-list-view');
 
   let documents = [];
   let filteredDocuments = [];
+
   let currentPage = 1;
+
+  const perPage = 50;
+
   let currentView = 'grid';
 
-  // ---------------------------------------------------------
-  // Load documents
-  // ---------------------------------------------------------
+
+  // -------------------------------------------------------
+  // LOAD DOCUMENTS
+  // -------------------------------------------------------
 
   try{
 
-    const response = await fetch('/documents.json');
+    const res = await fetch('/documents.json');
 
-    if(!response.ok){
+    if(!res.ok){
       throw new Error('Could not load documents.json');
     }
 
-    const data = await response.json();
+    const data = await res.json();
 
     documents = Array.isArray(data.items)
       ? data.items
       : [];
+
+    filteredDocuments = documents;
 
   }catch(error){
 
@@ -54,109 +64,137 @@ async function initDocSearch(){
       '<p style="color:#c00;padding:20px;">Could not load documents right now.</p>';
 
     return;
+
   }
 
 
-  // ---------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------
+  // -------------------------------------------------------
+  // HELPERS
+  // -------------------------------------------------------
 
-  function safe(value){
-    return String(value || '')
+  function escapeHTML(value){
+
+    if(value === undefined || value === null){
+      return '';
+    }
+
+    return String(value)
       .replace(/&/g,'&amp;')
       .replace(/</g,'&lt;')
       .replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;')
       .replace(/'/g,'&#039;');
-  }
-
-
-  function categoryClass(category){
-
-    return String(category || 'Other')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g,'-')
-      .replace(/^-|-$/g,'') || 'other';
 
   }
 
 
-  function categoryLabel(category){
-    return category || 'Other';
+  function getCategoryClass(category){
+
+    const value =
+      String(category || 'Other')
+        .toLowerCase()
+        .trim();
+
+    if(
+      value.includes('legal') ||
+      value.includes('act') ||
+      value.includes('law')
+    ){
+      return 'doc-category-legal';
+    }
+
+    if(
+      value.includes('report') ||
+      value.includes('research')
+    ){
+      return 'doc-category-report';
+    }
+
+    if(
+      value.includes('manual') ||
+      value.includes('guide')
+    ){
+      return 'doc-category-manual';
+    }
+
+    if(
+      value.includes('policy') ||
+      value.includes('brief')
+    ){
+      return 'doc-category-policy';
+    }
+
+    if(
+      value.includes('toolkit') ||
+      value.includes('tool')
+    ){
+      return 'doc-category-toolkit';
+    }
+
+    if(
+      value.includes('training') ||
+      value.includes('capacity')
+    ){
+      return 'doc-category-training';
+    }
+
+    return 'doc-category-other';
+
   }
 
 
-  // ---------------------------------------------------------
-  // Render documents
-  // ---------------------------------------------------------
+  // -------------------------------------------------------
+  // RENDER DOCUMENT CARD
+  // -------------------------------------------------------
 
-  function render(){
+  function createDocumentCard(doc){
 
-    results.innerHTML = '';
+    const card =
+      document.createElement('div');
 
-    let list = filteredDocuments;
-
-    // Preview mode
-    if(!fullRepository && previewLimit > 0){
-
-      list = list.slice(0, previewLimit);
-
-    }
-
-    // Full repository pagination
-    else if(fullRepository){
-
-      const start =
-        (currentPage - 1) * perPage;
-
-      list = list.slice(
-        start,
-        start + perPage
-      );
-
-    }
+    card.className =
+      'card document-card ' +
+      getCategoryClass(doc.category);
 
 
-    if(list.length === 0){
+    const title =
+      escapeHTML(doc.title || 'Untitled Document');
 
-      results.innerHTML =
-        '<p style="color:#888;padding:20px;text-align:center;grid-column:1/-1;">No documents match your search.</p>';
+    const category =
+      escapeHTML(doc.category || 'Other');
 
-    }
+    const region =
+      escapeHTML(doc.region || 'Pakistan');
+
+    const url =
+      escapeHTML(doc.url || '#');
 
 
-    list.forEach(doc => {
+    if(currentView === 'list'){
 
-      const card =
-        document.createElement('div');
-
-      const category =
-        categoryClass(doc.category);
-
-      card.className =
-        `document-card category-${category}`;
+      card.classList.add('document-list-item');
 
       card.innerHTML = `
 
-        <div>
+        <div class="document-info">
 
-          <span class="document-card-category">
-            ${safe(categoryLabel(doc.category))}
-          </span>
+          <h4>${title}</h4>
 
-          <h4>
-            ${safe(doc.title)}
-          </h4>
+          <p class="document-meta">
+            <span class="document-category">
+              ${category}
+            </span>
 
-          <div class="document-card-meta">
-            ${safe(doc.region || 'Pakistan')}
-          </div>
+            <span class="document-region">
+              ${region}
+            </span>
+          </p>
 
         </div>
 
         <a
           class="download-btn"
-          href="${safe(doc.url)}"
+          href="${url}"
           target="_blank"
           rel="noopener"
         >
@@ -165,152 +203,84 @@ async function initDocSearch(){
 
       `;
 
-      results.appendChild(card);
-
-    });
-
-
-    // -------------------------------------------------------
-    // View mode
-    // -------------------------------------------------------
-
-    if(currentView === 'list'){
-
-      results.classList.add(
-        'document-list-view'
-      );
-
     }else{
 
-      results.classList.remove(
-        'document-list-view'
-      );
+      card.innerHTML = `
+
+        <div class="document-category-label">
+          ${category}
+        </div>
+
+        <h4>${title}</h4>
+
+        <p>${region}</p>
+
+        <a
+          class="download-btn"
+          href="${url}"
+          target="_blank"
+          rel="noopener"
+        >
+          Open Document
+        </a>
+
+      `;
 
     }
 
-
-    // -------------------------------------------------------
-    // Count
-    // -------------------------------------------------------
-
-    if(countEl){
-
-      countEl.textContent =
-        filteredDocuments.length +
-        (
-          filteredDocuments.length === 1
-            ? ' document'
-            : ' documents'
-        );
-
-    }
-
-
-    // -------------------------------------------------------
-    // Full repository pagination
-    // -------------------------------------------------------
-
-    if(fullRepository){
-
-      renderPagination();
-
-    }else{
-
-      renderMoreButton();
-
-    }
+    return card;
 
   }
 
 
-  // ---------------------------------------------------------
-  // "Complete Knowledge Material" button
-  // ---------------------------------------------------------
+  // -------------------------------------------------------
+  // PAGINATION
+  // -------------------------------------------------------
 
-  function renderMoreButton(){
-
-    if(!moreLink) return;
-
-    const existing =
-      document.getElementById(
-        'document-more-button'
-      );
-
-    if(existing) existing.remove();
-
-    if(filteredDocuments.length <= previewLimit)
-      return;
-
-    const wrapper =
-      document.createElement('div');
-
-    wrapper.id =
-      'document-more-button';
-
-    wrapper.className =
-      'repository-more';
-
-    wrapper.innerHTML = `
-
-      <a
-        href="${moreLink}"
-        class="btn btn-navy"
-      >
-        Show Complete Knowledge Material →
-      </a>
-
-    `;
-
-    results.parentNode.appendChild(wrapper);
-
-  }
-
-
-  // ---------------------------------------------------------
-  // Pagination
-  // ---------------------------------------------------------
-
-  function renderPagination(){
+  function renderPagination(totalItems){
 
     if(!pagination) return;
 
     pagination.innerHTML = '';
 
     const totalPages =
-      Math.ceil(
-        filteredDocuments.length / perPage
-      );
+      Math.ceil(totalItems / perPage);
 
-    if(totalPages <= 1)
-      return;
+    if(totalPages <= 1) return;
 
-
-    // Previous
 
     const previous =
       document.createElement('button');
 
-    previous.className =
-      'document-page-btn';
+    previous.type = 'button';
 
-    previous.textContent =
-      '‹ Previous';
+    previous.className = 'pagination-btn';
+
+    previous.textContent = '← Previous';
 
     previous.disabled =
       currentPage === 1;
 
     previous.addEventListener(
       'click',
-      () => {
+      function(){
 
         if(currentPage > 1){
 
           currentPage--;
 
-          render();
+          render(
+            filteredDocuments,
+            false
+          );
 
           window.scrollTo({
-            top: results.offsetTop - 100,
+            top: document
+              .getElementById('doc-results')
+              .getBoundingClientRect()
+              .top
+              + window.scrollY
+              - 120,
             behavior:'smooth'
           });
 
@@ -319,36 +289,56 @@ async function initDocSearch(){
       }
     );
 
+
     pagination.appendChild(previous);
 
 
     // Page numbers
 
-    for(let i = 1; i <= totalPages; i++){
+    const startPage =
+      Math.max(1,currentPage - 2);
+
+    const endPage =
+      Math.min(totalPages,currentPage + 2);
+
+
+    for(
+      let page = startPage;
+      page <= endPage;
+      page++
+    ){
 
       const button =
         document.createElement('button');
 
-      button.className =
-        'document-page-btn' +
-        (
-          i === currentPage
-            ? ' active'
-            : ''
-        );
+      button.type = 'button';
 
-      button.textContent = i;
+      button.className =
+        'pagination-btn' +
+        (page === currentPage
+          ? ' active'
+          : '');
+
+      button.textContent = page;
 
       button.addEventListener(
         'click',
-        () => {
+        function(){
 
-          currentPage = i;
+          currentPage = page;
 
-          render();
+          render(
+            filteredDocuments,
+            false
+          );
 
           window.scrollTo({
-            top: results.offsetTop - 100,
+            top: document
+              .getElementById('doc-results')
+              .getBoundingClientRect()
+              .top
+              + window.scrollY
+              - 120,
             behavior:'smooth'
           });
 
@@ -360,32 +350,39 @@ async function initDocSearch(){
     }
 
 
-    // Next
-
     const next =
       document.createElement('button');
 
-    next.className =
-      'document-page-btn';
+    next.type = 'button';
 
-    next.textContent =
-      'Next ›';
+    next.className =
+      'pagination-btn';
+
+    next.textContent = 'Next →';
 
     next.disabled =
       currentPage === totalPages;
 
     next.addEventListener(
       'click',
-      () => {
+      function(){
 
         if(currentPage < totalPages){
 
           currentPage++;
 
-          render();
+          render(
+            filteredDocuments,
+            false
+          );
 
           window.scrollTo({
-            top: results.offsetTop - 100,
+            top: document
+              .getElementById('doc-results')
+              .getBoundingClientRect()
+              .top
+              + window.scrollY
+              - 120,
             behavior:'smooth'
           });
 
@@ -394,175 +391,395 @@ async function initDocSearch(){
       }
     );
 
+
     pagination.appendChild(next);
 
   }
 
 
-  // ---------------------------------------------------------
-  // Search
-  // ---------------------------------------------------------
+  // -------------------------------------------------------
+  // RENDER DOCUMENTS
+  // -------------------------------------------------------
 
-  function applyFilters(){
+  function render(list,isDefaultView){
 
-    const query =
-      input
-        ? input.value.trim().toLowerCase()
-        : '';
+    results.innerHTML = '';
 
-    const selectedCategory =
-      categoryFilter
-        ? categoryFilter.value
-        : 'all';
+    if(!list.length){
 
+      results.innerHTML =
+        '<p class="document-empty">No documents match your search.</p>';
 
-    filteredDocuments =
-      documents.filter(doc => {
+      if(countEl){
+        countEl.textContent =
+          '0 documents';
+      }
 
-        const title =
-          String(doc.title || '')
-            .toLowerCase();
+      if(pagination){
+        pagination.innerHTML = '';
+      }
 
-        const category =
-          String(doc.category || '')
-            .toLowerCase();
+      return;
 
-        const region =
-          String(doc.region || '')
-            .toLowerCase();
+    }
 
 
-        const matchesSearch =
-          !query ||
-          title.includes(query) ||
-          category.includes(query) ||
-          region.includes(query);
+    let toShow = list;
 
 
-        const matchesCategory =
-          selectedCategory === 'all' ||
-          doc.category === selectedCategory;
+    // -----------------------------------------------------
+    // RESOURCES PAGE
+    // Show only first 8 documents
+    // -----------------------------------------------------
 
+    if(!isFullRepository){
 
-        return (
-          matchesSearch &&
-          matchesCategory
+      const showLimited =
+        isDefaultView &&
+        previewLimit > 0 &&
+        list.length > previewLimit;
+
+      if(showLimited){
+
+        toShow =
+          list.slice(0,previewLimit);
+
+      }
+
+      toShow.forEach(function(doc){
+
+        results.appendChild(
+          createDocumentCard(doc)
         );
 
       });
 
 
-    currentPage = 1;
+      if(
+        showLimited &&
+        moreLink
+      ){
 
-    render();
+        const more =
+          document.createElement('a');
 
-  }
+        more.href =
+          moreLink;
+
+        more.className =
+          'card knowledge-more-card';
+
+        more.innerHTML = `
+
+          <div class="knowledge-more-icon">
+            →
+          </div>
+
+          <h4>
+            View Complete Knowledge Material
+          </h4>
+
+          <p>
+            Browse the complete repository
+            of ${list.length} documents.
+          </p>
+
+        `;
+
+        results.appendChild(more);
+
+      }
 
 
-  // ---------------------------------------------------------
-  // Category dropdown
-  // ---------------------------------------------------------
+      if(countEl){
 
-  if(categoryFilter){
+        countEl.textContent =
+          list.length +
+          (
+            list.length === 1
+              ? ' document'
+              : ' documents'
+          );
 
-    const categories =
-      [...new Set(
-        documents
-          .map(doc => doc.category)
-          .filter(Boolean)
-      )].sort();
+      }
+
+      return;
+
+    }
 
 
-    categories.forEach(category => {
+    // -----------------------------------------------------
+    // FULL KNOWLEDGE MATERIAL PAGE
+    // 50 DOCUMENTS PER PAGE
+    // -----------------------------------------------------
 
-      const option =
-        document.createElement('option');
+    const totalPages =
+      Math.ceil(list.length / perPage);
 
-      option.value = category;
 
-      option.textContent = category;
+    if(currentPage > totalPages){
 
-      categoryFilter.appendChild(option);
+      currentPage =
+        Math.max(1,totalPages);
+
+    }
+
+
+    const start =
+      (currentPage - 1) * perPage;
+
+    const end =
+      start + perPage;
+
+    toShow =
+      list.slice(start,end);
+
+
+    toShow.forEach(function(doc){
+
+      results.appendChild(
+        createDocumentCard(doc)
+      );
 
     });
 
 
-    categoryFilter.addEventListener(
-      'change',
-      applyFilters
+    if(countEl){
+
+      const first =
+        start + 1;
+
+      const last =
+        Math.min(
+          end,
+          list.length
+        );
+
+      countEl.textContent =
+        `Showing ${first}–${last} of ${list.length} documents`;
+
+    }
+
+
+    renderPagination(list.length);
+
+  }
+
+
+  // -------------------------------------------------------
+  // GRID / LIST VIEW
+  // -------------------------------------------------------
+
+  function setView(view){
+
+    currentView = view;
+
+    if(view === 'list'){
+
+      results.classList.add(
+        'knowledge-list-view'
+      );
+
+      results.classList.remove(
+        'knowledge-grid'
+      );
+
+      if(listButton){
+        listButton.classList.add('active');
+      }
+
+      if(gridButton){
+        gridButton.classList.remove('active');
+      }
+
+    }else{
+
+      results.classList.add(
+        'knowledge-grid'
+      );
+
+      results.classList.remove(
+        'knowledge-list-view'
+      );
+
+      if(gridButton){
+        gridButton.classList.add('active');
+      }
+
+      if(listButton){
+        listButton.classList.remove('active');
+      }
+
+    }
+
+
+    // Save user's preference
+
+    try{
+
+      localStorage.setItem(
+        'knowledgeMaterialView',
+        view
+      );
+
+    }catch(e){}
+
+
+    render(
+      filteredDocuments,
+      input.value.trim() === ''
     );
 
   }
 
 
-  // ---------------------------------------------------------
-  // Search listener
-  // ---------------------------------------------------------
+  if(gridButton){
 
-  if(input){
-
-    input.addEventListener(
-      'input',
-      applyFilters
-    );
-
-  }
-
-
-  // ---------------------------------------------------------
-  // Grid / List buttons
-  // ---------------------------------------------------------
-
-  viewButtons.forEach(button => {
-
-    button.addEventListener(
+    gridButton.addEventListener(
       'click',
-      () => {
+      function(){
+        setView('grid');
+      }
+    );
 
-        currentView =
-          button.dataset.view || 'grid';
+  }
 
 
-        viewButtons.forEach(btn => {
+  if(listButton){
 
-          btn.classList.toggle(
-            'active',
-            btn === button
+    listButton.addEventListener(
+      'click',
+      function(){
+        setView('list');
+      }
+    );
+
+  }
+
+
+  // Restore previous view
+
+  if(isFullRepository){
+
+    try{
+
+      const savedView =
+        localStorage.getItem(
+          'knowledgeMaterialView'
+        );
+
+      if(savedView === 'list'){
+
+        currentView = 'list';
+
+        results.classList.add(
+          'knowledge-list-view'
+        );
+
+        results.classList.remove(
+          'knowledge-grid'
+        );
+
+        if(listButton){
+          listButton.classList.add('active');
+        }
+
+        if(gridButton){
+          gridButton.classList.remove('active');
+        }
+
+      }
+
+    }catch(e){}
+
+  }
+
+
+  // -------------------------------------------------------
+  // INITIAL RENDER
+  // -------------------------------------------------------
+
+  render(
+    documents,
+    true
+  );
+
+
+  // -------------------------------------------------------
+  // SEARCH
+  // -------------------------------------------------------
+
+  input.addEventListener(
+    'input',
+    function(){
+
+      const q =
+        input.value
+          .trim()
+          .toLowerCase();
+
+
+      filteredDocuments =
+        documents.filter(function(doc){
+
+          const title =
+            String(doc.title || '')
+              .toLowerCase();
+
+          const category =
+            String(doc.category || '')
+              .toLowerCase();
+
+          const region =
+            String(doc.region || '')
+              .toLowerCase();
+
+
+          return (
+            title.includes(q) ||
+            category.includes(q) ||
+            region.includes(q)
           );
 
         });
 
 
-        render();
+      // Always start at page 1
+      // when search changes.
 
-      }
-    );
-
-  });
+      currentPage = 1;
 
 
-  // ---------------------------------------------------------
-  // Initial render
-  // ---------------------------------------------------------
+      render(
+        filteredDocuments,
+        q === ''
+      );
 
-  filteredDocuments =
-    [...documents];
-
-  render();
+    }
+  );
 
 }
 
 
+// =========================================================
+// YOUTUBE VIDEO GRID + MODAL PLAYER
+// =========================================================
 
-// =========================================================
-// YOUTUBE VIDEO REPOSITORY
-// =========================================================
+
+// Accepts:
+// - https://youtube.com/watch?v=XXXXXXXXXXX
+// - https://youtu.be/XXXXXXXXXXX
+// - https://youtube.com/embed/XXXXXXXXXXX
+// - https://youtube.com/shorts/XXXXXXXXXXX
+// - bare YouTube video ID
 
 function extractYouTubeId(input){
 
   if(!input) return '';
 
-  input = input.trim();
+  input =
+    input.trim();
+
 
   const patterns = [
 
@@ -576,8 +793,9 @@ function extractYouTubeId(input){
     const match =
       input.match(pattern);
 
-    if(match)
+    if(match){
       return match[1];
+    }
 
   }
 
@@ -596,6 +814,9 @@ function extractYouTubeId(input){
 }
 
 
+// ---------------------------------------------------------
+// VIDEO GRID
+// ---------------------------------------------------------
 
 async function initVideoGrid(){
 
@@ -607,9 +828,10 @@ async function initVideoGrid(){
 
   const previewLimit =
     parseInt(
-      grid.dataset.limit || '0',
+      grid.dataset.limit,
       10
-    );
+    ) || 0;
+
 
   const moreLink =
     grid.dataset.moreLink || '';
@@ -620,16 +842,23 @@ async function initVideoGrid(){
 
   try{
 
-    const response =
+    const res =
       await fetch('/videos.json');
 
+    if(!res.ok){
+      throw new Error(
+        'Could not load videos.json'
+      );
+    }
+
     const data =
-      await response.json();
+      await res.json();
 
     videos =
       Array.isArray(data.items)
         ? data.items
         : [];
+
 
   }catch(error){
 
@@ -652,11 +881,11 @@ async function initVideoGrid(){
       : videos;
 
 
-  toShow.forEach(video => {
+  toShow.forEach(function(v){
 
     const id =
       extractYouTubeId(
-        video.youtubeId
+        v.youtubeId
       );
 
 
@@ -667,18 +896,21 @@ async function initVideoGrid(){
       'video-card';
 
 
+    const safeTitle =
+      String(
+        v.title || 'YouTube Video'
+      )
+      .replace(/"/g,'&quot;');
+
+
     card.innerHTML = `
 
       <div class="video-thumb-wrap">
 
         <img
           src="https://img.youtube.com/vi/${id}/hqdefault.jpg"
-          alt="${safeVideoTitle(video.title)}"
-          onerror="
-            this.onerror=null;
-            this.parentElement.classList.add('thumb-fallback');
-            this.style.display='none';
-          "
+          alt="${safeTitle}"
+          onerror="this.onerror=null;this.parentElement.classList.add('thumb-fallback');this.style.display='none';"
         >
 
         <div class="play-overlay">
@@ -688,7 +920,7 @@ async function initVideoGrid(){
       </div>
 
       <div class="video-title">
-        ${safeVideoTitle(video.title)}
+        ${safeTitle}
       </div>
 
     `;
@@ -696,10 +928,14 @@ async function initVideoGrid(){
 
     card.addEventListener(
       'click',
-      () => openVideoModal(
-        id,
-        video.title
-      )
+      function(){
+
+        openVideoModal(
+          id,
+          v.title
+        );
+
+      }
     );
 
 
@@ -708,7 +944,10 @@ async function initVideoGrid(){
   });
 
 
-  if(showLimited && moreLink){
+  if(
+    showLimited &&
+    moreLink
+  ){
 
     const more =
       document.createElement('a');
@@ -717,13 +956,23 @@ async function initVideoGrid(){
       moreLink;
 
     more.className =
-      'video-card';
+      'video-card video-more-card';
 
-    more.style.cssText =
-      'display:flex;align-items:center;justify-content:center;color:var(--emerald);font-weight:700;min-height:160px;text-decoration:none;';
 
-    more.innerHTML =
-      `See all ${videos.length} videos →`;
+    more.innerHTML = `
+
+      <div>
+        <strong>
+          See all ${videos.length} videos →
+        </strong>
+
+        <span>
+          Open the complete LCA TV repository
+        </span>
+      </div>
+
+    `;
+
 
     grid.appendChild(more);
 
@@ -732,19 +981,9 @@ async function initVideoGrid(){
 }
 
 
-
-function safeVideoTitle(value){
-
-  return String(value || '')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-
-}
-
-
+// ---------------------------------------------------------
+// VIDEO MODAL
+// ---------------------------------------------------------
 
 function openVideoModal(id,title){
 
@@ -755,6 +994,13 @@ function openVideoModal(id,title){
     'video-modal-overlay';
 
 
+  const safeTitle =
+    String(
+      title || 'YouTube Video'
+    )
+    .replace(/"/g,'&quot;');
+
+
   overlay.innerHTML = `
 
     <div class="video-modal">
@@ -762,6 +1008,7 @@ function openVideoModal(id,title){
       <button
         class="video-modal-close"
         aria-label="Close"
+        type="button"
       >
         &times;
       </button>
@@ -770,11 +1017,11 @@ function openVideoModal(id,title){
 
         <iframe
           src="https://www.youtube.com/embed/${id}?autoplay=1"
-          title="${safeVideoTitle(title)}"
+          title="${safeTitle}"
           frameborder="0"
           allow="autoplay; encrypted-media"
-          allowfullscreen>
-        </iframe>
+          allowfullscreen
+        ></iframe>
 
       </div>
 
@@ -790,11 +1037,11 @@ function openVideoModal(id,title){
 
   overlay.addEventListener(
     'click',
-    event => {
+    function(e){
 
       if(
-        event.target === overlay ||
-        event.target.classList.contains(
+        e.target === overlay ||
+        e.target.classList.contains(
           'video-modal-close'
         )
       ){
@@ -806,17 +1053,37 @@ function openVideoModal(id,title){
     }
   );
 
+
+  // ESC closes video
+
+  document.addEventListener(
+    'keydown',
+    function closeOnEscape(e){
+
+      if(e.key === 'Escape'){
+
+        overlay.remove();
+
+        document.removeEventListener(
+          'keydown',
+          closeOnEscape
+        );
+
+      }
+
+    }
+  );
+
 }
 
 
-
 // =========================================================
-// INITIALISE
+// START ALL PAGE FUNCTIONS
 // =========================================================
 
 document.addEventListener(
   'DOMContentLoaded',
-  () => {
+  function(){
 
     initDocSearch();
 
