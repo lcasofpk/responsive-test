@@ -9,61 +9,54 @@ layout: base.njk
 
 <div class="page-hero">
   <h1>Resources &amp; Knowledge Hub</h1>
-  <p>Videos, legal texts, reports, toolkits, and other knowledge materials for local government leaders.</p>
+  <p>Videos, legal texts, and toolkits for local government leaders.</p>
 </div>
 
-
-<!-- =========================================================
+<!-- =====================================================
      KNOWLEDGE MATERIAL
-========================================================= -->
+===================================================== -->
 
-<section class="section">
+<section class="section section-alt">
 
-  <h2>Knowledge Material</h2>
+  <h2>Knowledge Repository</h2>
 
-  <p style="text-align:center;color:#777;max-width:700px;margin:-20px auto 30px;">
-    Explore legal acts, reports, policy briefs, manuals, toolkits, guidelines, and other resources.
+  <p style="text-align:center;color:#777;margin-top:-22px;margin-bottom:30px;">
+    Browse a selection of our latest legal acts, reports, manuals, policy briefs and toolkits.
   </p>
 
   <div class="search-bar">
     <input
       type="text"
       id="doc-search"
-      placeholder="Search by title, region, or category..."
+      placeholder="Search Legal Acts, Toolkits, and more..."
     >
   </div>
 
   <p class="doc-count" id="doc-count"></p>
 
   <div
-    id="doc-results"
     class="grid"
+    id="doc-results"
     data-limit="8"
-    data-more-link="/knowledge-material/"
+    data-preview="true"
   ></div>
 
-  <div style="text-align:center;margin-top:30px;">
-
-    <a
-      href="/knowledge-material/"
-      class="knowledge-more-btn"
-    >
-      Show Complete Knowledge Material
-      <span aria-hidden="true">→</span>
+  <div class="knowledge-more">
+    <a href="/knowledge-material/" class="btn btn-navy">
+      Show Complete Knowledge Material &nbsp;→
     </a>
-
   </div>
 
 </section>
 
 
-<!-- =========================================================
-     LCA TV
-========================================================= -->
+<!-- =====================================================
+     VIDEO REPOSITORY
+===================================================== -->
 
-<section class="section section-alt">
+<section class="section">
 
-  <h2>LCA TV — Video Vault</h2>
+  <h2>LCA TV (Video Vault)</h2>
 
   <p style="text-align:center;color:#888;font-size:.85rem;margin-top:-24px;margin-bottom:30px;">
     Click any video to watch it without leaving the page.
@@ -72,8 +65,6 @@ layout: base.njk
   <div
     class="video-grid"
     id="video-grid"
-    data-limit="6"
-    data-more-link="/resources/"
   ></div>
 
 </section>
