@@ -40,7 +40,7 @@ layout: base.njk
 
   <div
     id="doc-results"
-    class="grid knowledge-grid"
+    class="document-grid"
     data-full-repository="true"
   ></div>
 
