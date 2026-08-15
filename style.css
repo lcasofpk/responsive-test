@@ -1290,3 +1290,274 @@ table.acts-table tr:nth-child(even){
   }
 
 }
+/* =========================================================
+   DOCUMENT REPOSITORY
+========================================================= */
+
+.document-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:25px;
+}
+
+.document-view-buttons{
+  display:flex;
+  gap:6px;
+}
+
+.document-view-btn{
+  border:1px solid #ddd;
+  background:#fff;
+  color:var(--navy);
+  padding:8px 13px;
+  border-radius:4px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:.82rem;
+}
+
+.document-view-btn.active,
+.document-view-btn:hover{
+  background:var(--navy);
+  color:#fff;
+}
+
+.document-category-filter{
+  padding:9px 13px;
+  border:1px solid #ddd;
+  border-radius:5px;
+  background:#fff;
+  font:inherit;
+}
+
+.document-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.document-card{
+  background:#fff;
+  border:1px solid #e5e5e5;
+  border-radius:7px;
+  padding:20px;
+  position:relative;
+  border-top:5px solid var(--gold);
+  transition:transform .2s,box-shadow .2s;
+}
+
+.document-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+}
+
+.document-card h4{
+  color:var(--navy);
+  font-size:1rem;
+  margin:0 0 10px;
+}
+
+.document-card-meta{
+  font-size:.8rem;
+  color:#777;
+  margin-bottom:15px;
+}
+
+.document-card-category{
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:4px;
+  font-size:.72rem;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+/* Category colours */
+
+.document-card.category-legal-act{
+  border-top-color:#8B0000;
+}
+
+.document-card.category-legal-act .document-card-category{
+  background:#f8d7da;
+  color:#8B0000;
+}
+
+.document-card.category-toolkit{
+  border-top-color:#0A5C36;
+}
+
+.document-card.category-toolkit .document-card-category{
+  background:#d8f3e5;
+  color:#0A5C36;
+}
+
+.document-card.category-policy-brief{
+  border-top-color:#1D2A44;
+}
+
+.document-card.category-policy-brief .document-card-category{
+  background:#dce3f0;
+  color:#1D2A44;
+}
+
+.document-card.category-report{
+  border-top-color:#B8860B;
+}
+
+.document-card.category-report .document-card-category{
+  background:#fff1bf;
+  color:#806000;
+}
+
+.document-card.category-manual{
+  border-top-color:#6A3D9A;
+}
+
+.document-card.category-manual .document-card-category{
+  background:#eadcf5;
+  color:#6A3D9A;
+}
+
+.document-card.category-other{
+  border-top-color:#666;
+}
+
+.document-card.category-other .document-card-category{
+  background:#e9ecef;
+  color:#555;
+}
+
+
+/* List view */
+
+.document-grid.document-list-view{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.document-list-view .document-card{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:20px;
+  padding:14px 18px;
+  border-top:1px solid #e5e5e5;
+  border-left:5px solid var(--gold);
+}
+
+.document-list-view .document-card h4{
+  margin:0;
+}
+
+.document-list-view .document-card-meta{
+  margin:0;
+}
+
+.document-list-view .document-card-category{
+  margin:0;
+}
+
+
+/* Pagination */
+
+.document-pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:35px;
+}
+
+.document-page-btn{
+  min-width:38px;
+  height:38px;
+  padding:0 10px;
+  border:1px solid #ddd;
+  background:#fff;
+  color:var(--navy);
+  border-radius:4px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.document-page-btn:hover,
+.document-page-btn.active{
+  background:var(--navy);
+  color:#fff;
+  border-color:var(--navy);
+}
+
+.document-page-btn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.document-results-info{
+  text-align:center;
+  color:#777;
+  font-size:.82rem;
+  margin:15px 0 20px;
+}
+
+
+/* Full repository button */
+
+.repository-more{
+  text-align:center;
+  margin-top:28px;
+}
+
+.repository-more .btn{
+  display:inline-block;
+}
+
+
+/* Responsive */
+
+@media (max-width:1000px){
+
+  .document-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+@media (max-width:700px){
+
+  .document-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .document-list-view .document-card{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+}
+
+@media (max-width:480px){
+
+  .document-grid{
+    grid-template-columns:1fr;
+  }
+
+  .document-toolbar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .document-view-buttons{
+    width:100%;
+  }
+
+  .document-view-btn{
+    flex:1;
+  }
+
+}
