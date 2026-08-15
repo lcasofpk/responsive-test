@@ -1,162 +1,288 @@
-// ---------- PDF / Document Search ----------
+// =========================================================
+// DOCUMENT / PDF REPOSITORY
+// =========================================================
 
 async function initDocSearch(){
 
   const input = document.getElementById('doc-search');
   const results = document.getElementById('doc-results');
+
+  if(!results) return;
+
   const countEl = document.getElementById('doc-count');
-
-  if(!input || !results) return;
-
-  const isFullRepository =
-    results.dataset.fullRepository === 'true';
+  const categoryFilter = document.getElementById('doc-category-filter');
+  const pagination = document.getElementById('doc-pagination');
+  const viewButtons = document.querySelectorAll('.document-view-btn');
 
   const previewLimit =
-    parseInt(results.dataset.limit, 10) || 0;
+    parseInt(results.dataset.limit || '0', 10);
 
   const moreLink =
     results.dataset.moreLink || '';
 
-  const pagination =
-    document.getElementById('doc-pagination');
+  const fullRepository =
+    results.dataset.fullRepository === 'true';
 
-  const gridButton =
-    document.getElementById('doc-grid-view');
-
-  const listButton =
-    document.getElementById('doc-list-view');
-
-  const PER_PAGE = 50;
+  const perPage = 50;
 
   let documents = [];
   let filteredDocuments = [];
   let currentPage = 1;
-  let viewMode = 'grid';
+  let currentView = 'grid';
 
-
-  // ---------- Load Documents ----------
+  // ---------------------------------------------------------
+  // Load documents
+  // ---------------------------------------------------------
 
   try{
 
-    const res = await fetch('/documents.json');
+    const response = await fetch('/documents.json');
 
-    const data = await res.json();
+    if(!response.ok){
+      throw new Error('Could not load documents.json');
+    }
+
+    const data = await response.json();
 
     documents = Array.isArray(data.items)
       ? data.items
       : [];
 
-    filteredDocuments = documents;
-
-  }catch(e){
+  }catch(error){
 
     results.innerHTML =
       '<p style="color:#c00;padding:20px;">Could not load documents right now.</p>';
 
     return;
-
   }
 
 
-  // ---------- Helpers ----------
+  // ---------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------
 
   function safe(value){
-    return String(value || '');
-  }
-
-
-  function escapeHTML(value){
-
-    return safe(value)
+    return String(value || '')
       .replace(/&/g,'&amp;')
       .replace(/</g,'&lt;')
       .replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;')
       .replace(/'/g,'&#039;');
-
   }
 
 
   function categoryClass(category){
 
-    return 'category-' +
-      safe(category)
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g,'-')
-        .replace(/^-|-$/g,'');
+    return String(category || 'Other')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/^-|-$/g,'') || 'other';
 
   }
 
 
-  // ---------- Render One Document ----------
+  function categoryLabel(category){
+    return category || 'Other';
+  }
 
-  function renderDocument(doc){
 
-    const card =
+  // ---------------------------------------------------------
+  // Render documents
+  // ---------------------------------------------------------
+
+  function render(){
+
+    results.innerHTML = '';
+
+    let list = filteredDocuments;
+
+    // Preview mode
+    if(!fullRepository && previewLimit > 0){
+
+      list = list.slice(0, previewLimit);
+
+    }
+
+    // Full repository pagination
+    else if(fullRepository){
+
+      const start =
+        (currentPage - 1) * perPage;
+
+      list = list.slice(
+        start,
+        start + perPage
+      );
+
+    }
+
+
+    if(list.length === 0){
+
+      results.innerHTML =
+        '<p style="color:#888;padding:20px;text-align:center;grid-column:1/-1;">No documents match your search.</p>';
+
+    }
+
+
+    list.forEach(doc => {
+
+      const card =
+        document.createElement('div');
+
+      const category =
+        categoryClass(doc.category);
+
+      card.className =
+        `document-card category-${category}`;
+
+      card.innerHTML = `
+
+        <div>
+
+          <span class="document-card-category">
+            ${safe(categoryLabel(doc.category))}
+          </span>
+
+          <h4>
+            ${safe(doc.title)}
+          </h4>
+
+          <div class="document-card-meta">
+            ${safe(doc.region || 'Pakistan')}
+          </div>
+
+        </div>
+
+        <a
+          class="download-btn"
+          href="${safe(doc.url)}"
+          target="_blank"
+          rel="noopener"
+        >
+          Open Document
+        </a>
+
+      `;
+
+      results.appendChild(card);
+
+    });
+
+
+    // -------------------------------------------------------
+    // View mode
+    // -------------------------------------------------------
+
+    if(currentView === 'list'){
+
+      results.classList.add(
+        'document-list-view'
+      );
+
+    }else{
+
+      results.classList.remove(
+        'document-list-view'
+      );
+
+    }
+
+
+    // -------------------------------------------------------
+    // Count
+    // -------------------------------------------------------
+
+    if(countEl){
+
+      countEl.textContent =
+        filteredDocuments.length +
+        (
+          filteredDocuments.length === 1
+            ? ' document'
+            : ' documents'
+        );
+
+    }
+
+
+    // -------------------------------------------------------
+    // Full repository pagination
+    // -------------------------------------------------------
+
+    if(fullRepository){
+
+      renderPagination();
+
+    }else{
+
+      renderMoreButton();
+
+    }
+
+  }
+
+
+  // ---------------------------------------------------------
+  // "Complete Knowledge Material" button
+  // ---------------------------------------------------------
+
+  function renderMoreButton(){
+
+    if(!moreLink) return;
+
+    const existing =
+      document.getElementById(
+        'document-more-button'
+      );
+
+    if(existing) existing.remove();
+
+    if(filteredDocuments.length <= previewLimit)
+      return;
+
+    const wrapper =
       document.createElement('div');
 
-    card.className =
-      viewMode === 'list'
-        ? 'card document-card document-list-view'
-        : 'card document-card';
+    wrapper.id =
+      'document-more-button';
 
+    wrapper.className =
+      'repository-more';
 
-    const title =
-      escapeHTML(doc.title);
-
-    const category =
-      escapeHTML(doc.category || 'Other');
-
-    const region =
-      escapeHTML(doc.region || '');
-
-    const url =
-      escapeHTML(doc.url || '#');
-
-
-    card.innerHTML = `
-
-      <div class="document-content">
-
-        <span class="document-category ${categoryClass(doc.category)}">
-          ${category}
-        </span>
-
-        <h4>${title}</h4>
-
-        ${
-          region
-            ? `<p class="document-region">${region}</p>`
-            : ''
-        }
-
-      </div>
+    wrapper.innerHTML = `
 
       <a
-        class="download-btn"
-        href="${url}"
-        target="_blank"
-        rel="noopener"
+        href="${moreLink}"
+        class="btn btn-navy"
       >
-        Open Document
+        Show Complete Knowledge Material →
       </a>
 
     `;
 
-    results.appendChild(card);
+    results.parentNode.appendChild(wrapper);
 
   }
 
 
-  // ---------- Pagination ----------
+  // ---------------------------------------------------------
+  // Pagination
+  // ---------------------------------------------------------
 
-  function renderPagination(totalPages){
+  function renderPagination(){
 
     if(!pagination) return;
 
     pagination.innerHTML = '';
 
-    if(totalPages <= 1) return;
+    const totalPages =
+      Math.ceil(
+        filteredDocuments.length / perPage
+      );
+
+    if(totalPages <= 1)
+      return;
 
 
     // Previous
@@ -164,106 +290,72 @@ async function initDocSearch(){
     const previous =
       document.createElement('button');
 
-    previous.type = 'button';
+    previous.className =
+      'document-page-btn';
 
-    previous.textContent = '← Previous';
-
-    previous.className = 'pagination-btn';
+    previous.textContent =
+      '‹ Previous';
 
     previous.disabled =
       currentPage === 1;
 
-    previous.addEventListener('click', function(){
+    previous.addEventListener(
+      'click',
+      () => {
 
-      if(currentPage > 1){
+        if(currentPage > 1){
 
-        currentPage--;
+          currentPage--;
 
-        render();
+          render();
 
-        window.scrollTo({
-          top: results.offsetTop - 100,
-          behavior: 'smooth'
-        });
+          window.scrollTo({
+            top: results.offsetTop - 100,
+            behavior:'smooth'
+          });
+
+        }
 
       }
-
-    });
+    );
 
     pagination.appendChild(previous);
 
 
     // Page numbers
 
-    const maxVisiblePages = 7;
+    for(let i = 1; i <= totalPages; i++){
 
-    let startPage =
-      Math.max(1, currentPage - 3);
+      const button =
+        document.createElement('button');
 
-    let endPage =
-      Math.min(
-        totalPages,
-        startPage + maxVisiblePages - 1
-      );
-
-    if(endPage - startPage < maxVisiblePages - 1){
-
-      startPage =
-        Math.max(
-          1,
-          endPage - maxVisiblePages + 1
+      button.className =
+        'document-page-btn' +
+        (
+          i === currentPage
+            ? ' active'
+            : ''
         );
 
-    }
+      button.textContent = i;
 
+      button.addEventListener(
+        'click',
+        () => {
 
-    if(startPage > 1){
+          currentPage = i;
 
-      addPageButton(1);
+          render();
 
-      if(startPage > 2){
+          window.scrollTo({
+            top: results.offsetTop - 100,
+            behavior:'smooth'
+          });
 
-        const dots =
-          document.createElement('span');
+        }
+      );
 
-        dots.className = 'pagination-dots';
-
-        dots.textContent = '…';
-
-        pagination.appendChild(dots);
-
-      }
-
-    }
-
-
-    for(
-      let page = startPage;
-      page <= endPage;
-      page++
-    ){
-
-      addPageButton(page);
-
-    }
-
-
-    if(endPage < totalPages){
-
-      if(endPage < totalPages - 1){
-
-        const dots =
-          document.createElement('span');
-
-        dots.className = 'pagination-dots';
-
-        dots.textContent = '…';
-
-        pagination.appendChild(dots);
-
-      }
-
-      addPageButton(totalPages);
+      pagination.appendChild(button);
 
     }
 
@@ -273,200 +365,88 @@ async function initDocSearch(){
     const next =
       document.createElement('button');
 
-    next.type = 'button';
+    next.className =
+      'document-page-btn';
 
-    next.textContent = 'Next →';
-
-    next.className = 'pagination-btn';
+    next.textContent =
+      'Next ›';
 
     next.disabled =
       currentPage === totalPages;
 
-    next.addEventListener('click', function(){
+    next.addEventListener(
+      'click',
+      () => {
 
-      if(currentPage < totalPages){
+        if(currentPage < totalPages){
 
-        currentPage++;
+          currentPage++;
 
-        render();
+          render();
 
-        window.scrollTo({
-          top: results.offsetTop - 100,
-          behavior: 'smooth'
-        });
+          window.scrollTo({
+            top: results.offsetTop - 100,
+            behavior:'smooth'
+          });
+
+        }
 
       }
-
-    });
+    );
 
     pagination.appendChild(next);
 
-
-    function addPageButton(page){
-
-      const button =
-        document.createElement('button');
-
-      button.type = 'button';
-
-      button.textContent = page;
-
-      button.className =
-        'pagination-btn' +
-        (page === currentPage
-          ? ' active'
-          : '');
-
-      button.addEventListener('click', function(){
-
-        currentPage = page;
-
-        render();
-
-        window.scrollTo({
-          top: results.offsetTop - 100,
-          behavior: 'smooth'
-        });
-
-      });
-
-      pagination.appendChild(button);
-
-    }
-
   }
 
 
-  // ---------- Render Documents ----------
+  // ---------------------------------------------------------
+  // Search
+  // ---------------------------------------------------------
 
-  function render(){
+  function applyFilters(){
 
-    results.innerHTML = '';
+    const query =
+      input
+        ? input.value.trim().toLowerCase()
+        : '';
 
-    if(pagination){
-      pagination.innerHTML = '';
-    }
-
-
-    // No results
-
-    if(filteredDocuments.length === 0){
-
-      results.innerHTML =
-        '<p style="color:#888;padding:20px;grid-column:1/-1;text-align:center;">No documents match your search.</p>';
-
-      if(countEl){
-        countEl.textContent = 'No documents found';
-      }
-
-      return;
-
-    }
-
-
-    // ---------- Resources Preview ----------
-
-    if(!isFullRepository){
-
-      const toShow =
-        previewLimit > 0
-          ? filteredDocuments.slice(0, previewLimit)
-          : filteredDocuments;
-
-      toShow.forEach(renderDocument);
-
-
-      if(countEl){
-
-        countEl.textContent =
-          filteredDocuments.length +
-          (
-            filteredDocuments.length === 1
-              ? ' document'
-              : ' documents'
-          );
-
-      }
-
-      return;
-
-    }
-
-
-    // ---------- Full Repository ----------
-
-    const totalPages =
-      Math.ceil(
-        filteredDocuments.length / PER_PAGE
-      );
-
-
-    if(currentPage > totalPages){
-
-      currentPage = totalPages;
-
-    }
-
-
-    const start =
-      (currentPage - 1) * PER_PAGE;
-
-    const end =
-      Math.min(
-        start + PER_PAGE,
-        filteredDocuments.length
-      );
-
-
-    const pageDocuments =
-      filteredDocuments.slice(start, end);
-
-
-    pageDocuments.forEach(renderDocument);
-
-
-    if(countEl){
-
-      countEl.textContent =
-        `Showing ${start + 1}–${end} of ${filteredDocuments.length} documents`;
-
-    }
-
-
-    renderPagination(totalPages);
-
-  }
-
-
-  // ---------- Search ----------
-
-  input.addEventListener('input', function(){
-
-    const q =
-      input.value.trim().toLowerCase();
+    const selectedCategory =
+      categoryFilter
+        ? categoryFilter.value
+        : 'all';
 
 
     filteredDocuments =
-      documents.filter(function(doc){
+      documents.filter(doc => {
+
+        const title =
+          String(doc.title || '')
+            .toLowerCase();
+
+        const category =
+          String(doc.category || '')
+            .toLowerCase();
+
+        const region =
+          String(doc.region || '')
+            .toLowerCase();
+
+
+        const matchesSearch =
+          !query ||
+          title.includes(query) ||
+          category.includes(query) ||
+          region.includes(query);
+
+
+        const matchesCategory =
+          selectedCategory === 'all' ||
+          doc.category === selectedCategory;
+
 
         return (
-
-          safe(doc.title)
-            .toLowerCase()
-            .includes(q)
-
-          ||
-
-          safe(doc.category)
-            .toLowerCase()
-            .includes(q)
-
-          ||
-
-          safe(doc.region)
-            .toLowerCase()
-            .includes(q)
-
+          matchesSearch &&
+          matchesCategory
         );
 
       });
@@ -476,77 +456,107 @@ async function initDocSearch(){
 
     render();
 
+  }
+
+
+  // ---------------------------------------------------------
+  // Category dropdown
+  // ---------------------------------------------------------
+
+  if(categoryFilter){
+
+    const categories =
+      [...new Set(
+        documents
+          .map(doc => doc.category)
+          .filter(Boolean)
+      )].sort();
+
+
+    categories.forEach(category => {
+
+      const option =
+        document.createElement('option');
+
+      option.value = category;
+
+      option.textContent = category;
+
+      categoryFilter.appendChild(option);
+
+    });
+
+
+    categoryFilter.addEventListener(
+      'change',
+      applyFilters
+    );
+
+  }
+
+
+  // ---------------------------------------------------------
+  // Search listener
+  // ---------------------------------------------------------
+
+  if(input){
+
+    input.addEventListener(
+      'input',
+      applyFilters
+    );
+
+  }
+
+
+  // ---------------------------------------------------------
+  // Grid / List buttons
+  // ---------------------------------------------------------
+
+  viewButtons.forEach(button => {
+
+    button.addEventListener(
+      'click',
+      () => {
+
+        currentView =
+          button.dataset.view || 'grid';
+
+
+        viewButtons.forEach(btn => {
+
+          btn.classList.toggle(
+            'active',
+            btn === button
+          );
+
+        });
+
+
+        render();
+
+      }
+    );
+
   });
 
 
-  // ---------- Grid View ----------
+  // ---------------------------------------------------------
+  // Initial render
+  // ---------------------------------------------------------
 
-  if(gridButton){
-
-    gridButton.addEventListener('click', function(){
-
-      viewMode = 'grid';
-
-      results.classList.remove(
-        'documents-list'
-      );
-
-      results.classList.add(
-        'grid'
-      );
-
-      gridButton.classList.add('active');
-
-      if(listButton){
-        listButton.classList.remove('active');
-      }
-
-      render();
-
-    });
-
-  }
-
-
-  // ---------- List View ----------
-
-  if(listButton){
-
-    listButton.addEventListener('click', function(){
-
-      viewMode = 'list';
-
-      results.classList.remove(
-        'grid'
-      );
-
-      results.classList.add(
-        'documents-list'
-      );
-
-      listButton.classList.add('active');
-
-      if(gridButton){
-        gridButton.classList.remove('active');
-      }
-
-      render();
-
-    });
-
-  }
-
-
-  // ---------- Initial Render ----------
+  filteredDocuments =
+    [...documents];
 
   render();
 
 }
 
 
-// ---------- Video Grid + Modal Player ----------
 
-// Accepts a full YouTube URL or a bare YouTube ID.
+// =========================================================
+// YOUTUBE VIDEO REPOSITORY
+// =========================================================
 
 function extractYouTubeId(input){
 
@@ -566,15 +576,18 @@ function extractYouTubeId(input){
     const match =
       input.match(pattern);
 
-    if(match){
+    if(match)
       return match[1];
-    }
 
   }
 
 
-  if(/^[a-zA-Z0-9_-]{11}$/.test(input)){
+  if(
+    /^[a-zA-Z0-9_-]{11}$/.test(input)
+  ){
+
     return input;
+
   }
 
 
@@ -583,7 +596,6 @@ function extractYouTubeId(input){
 }
 
 
-// ---------- Video Grid ----------
 
 async function initVideoGrid(){
 
@@ -594,7 +606,10 @@ async function initVideoGrid(){
 
 
   const previewLimit =
-    parseInt(grid.dataset.limit, 10) || 0;
+    parseInt(
+      grid.dataset.limit || '0',
+      10
+    );
 
   const moreLink =
     grid.dataset.moreLink || '';
@@ -605,18 +620,18 @@ async function initVideoGrid(){
 
   try{
 
-    const res =
+    const response =
       await fetch('/videos.json');
 
     const data =
-      await res.json();
+      await response.json();
 
     videos =
       Array.isArray(data.items)
         ? data.items
         : [];
 
-  }catch(e){
+  }catch(error){
 
     grid.innerHTML =
       '<p style="color:#c00;">Could not load videos right now.</p>';
@@ -626,9 +641,6 @@ async function initVideoGrid(){
   }
 
 
-  grid.innerHTML = '';
-
-
   const showLimited =
     previewLimit > 0 &&
     videos.length > previewLimit;
@@ -636,14 +648,16 @@ async function initVideoGrid(){
 
   const toShow =
     showLimited
-      ? videos.slice(0, previewLimit)
+      ? videos.slice(0,previewLimit)
       : videos;
 
 
-  toShow.forEach(function(v){
+  toShow.forEach(video => {
 
     const id =
-      extractYouTubeId(v.youtubeId);
+      extractYouTubeId(
+        video.youtubeId
+      );
 
 
     const card =
@@ -659,8 +673,12 @@ async function initVideoGrid(){
 
         <img
           src="https://img.youtube.com/vi/${id}/hqdefault.jpg"
-          alt="${escapeVideoText(v.title)}"
-          onerror="this.onerror=null;this.parentElement.classList.add('thumb-fallback');this.style.display='none';"
+          alt="${safeVideoTitle(video.title)}"
+          onerror="
+            this.onerror=null;
+            this.parentElement.classList.add('thumb-fallback');
+            this.style.display='none';
+          "
         >
 
         <div class="play-overlay">
@@ -670,20 +688,19 @@ async function initVideoGrid(){
       </div>
 
       <div class="video-title">
-        ${escapeVideoText(v.title)}
+        ${safeVideoTitle(video.title)}
       </div>
 
     `;
 
 
-    card.addEventListener('click', function(){
-
-      openVideoModal(
+    card.addEventListener(
+      'click',
+      () => openVideoModal(
         id,
-        v.title
-      );
-
-    });
+        video.title
+      )
+    );
 
 
     grid.appendChild(card);
@@ -715,9 +732,8 @@ async function initVideoGrid(){
 }
 
 
-// ---------- Video Text Escape ----------
 
-function escapeVideoText(value){
+function safeVideoTitle(value){
 
   return String(value || '')
     .replace(/&/g,'&amp;')
@@ -729,9 +745,8 @@ function escapeVideoText(value){
 }
 
 
-// ---------- Video Modal ----------
 
-function openVideoModal(id, title){
+function openVideoModal(id,title){
 
   const overlay =
     document.createElement('div');
@@ -755,11 +770,11 @@ function openVideoModal(id, title){
 
         <iframe
           src="https://www.youtube.com/embed/${id}?autoplay=1"
-          title="${escapeVideoText(title)}"
+          title="${safeVideoTitle(title)}"
           frameborder="0"
           allow="autoplay; encrypted-media"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen>
+        </iframe>
 
       </div>
 
@@ -775,11 +790,11 @@ function openVideoModal(id, title){
 
   overlay.addEventListener(
     'click',
-    function(e){
+    event => {
 
       if(
-        e.target === overlay ||
-        e.target.classList.contains(
+        event.target === overlay ||
+        event.target.classList.contains(
           'video-modal-close'
         )
       ){
@@ -794,11 +809,14 @@ function openVideoModal(id, title){
 }
 
 
-// ---------- Initialise ----------
+
+// =========================================================
+// INITIALISE
+// =========================================================
 
 document.addEventListener(
   'DOMContentLoaded',
-  function(){
+  () => {
 
     initDocSearch();
 
