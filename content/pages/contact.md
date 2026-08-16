@@ -6,31 +6,76 @@ layout: base.njk
 ---
 <div class="page-hero"><h1>Contact Us</h1><p>Reach the National Secretariat or your regional office.</p></div>
 <section class="section">
-<div class="contact-grid">
-<div class="contact-form">
-<h2 style="text-align:left;">Send a Message</h2>
-<form onsubmit="return false;">
-<label>Full Name</label><input type="text" placeholder="Your name">
-<label>Email Address</label><input type="email" placeholder="you@example.com">
-<label>Phone / WhatsApp</label><input type="text" placeholder="+92...">
-<label>Designation</label><input type="text" placeholder="e.g. Councillor, Mayor">
-<label>Region</label>
-<select><option>Islamabad</option><option>Punjab</option><option>Sindh</option><option>KP</option><option>Balochistan</option><option>AJK</option><option>Gilgit-Baltistan</option></select>
-<label>Subject</label><input type="text" placeholder="Subject">
-<label>Message</label><textarea rows="4" placeholder="Your message"></textarea>
-<button class="btn btn-navy" type="submit">Send Message</button>
-</form>
+<h2>National Secretariat</h2>
+<div class="grid">
+<div class="card">
+<h4>Head Office — Islamabad</h4>
+<p>
+[Address placeholder, Islamabad]<br>
+Contact: [Name placeholder]<br>
+Ph: 051-XXXXXXX (PTCL)<br>
+info@adlg.org.pk<br>
+SECP CUIN: 0094419
+</p>
 </div>
-<div class="office-list">
-<h2 style="text-align:left;">National Secretariat</h2>
-<div class="card"><h4>Head Office</h4><p>Islamabad, Pakistan<br>info@adlg.org.pk<br>+92-51-XXXXXXX<br>SECP CUIN: 0094419</p></div>
-<h2 style="text-align:left;margin-top:30px;">Regional Secretariats</h2>
-<div class="card"><h4>LCA Punjab</h4><p>Lahore | punjab@adlg.org.pk</p></div>
-<div class="card"><h4>LCA Sindh</h4><p>Karachi | sindh@adlg.org.pk</p></div>
-<div class="card"><h4>LCA KP</h4><p>Peshawar | kp@adlg.org.pk</p></div>
-<div class="card"><h4>LCA Balochistan</h4><p>Quetta | balochistan@adlg.org.pk</p></div>
-<div class="card"><h4>LCA AJK</h4><p>Muzaffarabad | ajk@adlg.org.pk</p></div>
-<div class="card"><h4>LCA GB</h4><p>Gilgit | gb@adlg.org.pk</p></div>
+</div>
+</section>
+<section class="section section-alt">
+<h2>Regional Secretariats</h2>
+<div class="grid">
+<div class="card">
+<h4>LCA Punjab</h4>
+<p>
+[Address placeholder, Lahore]<br>
+Contact: [Name placeholder]<br>
+Ph: 042-XXXXXXX (PTCL)<br>
+punjab@adlg.org.pk
+</p>
+</div>
+<div class="card">
+<h4>LCA Sindh</h4>
+<p>
+[Address placeholder, Karachi]<br>
+Contact: [Name placeholder]<br>
+Ph: 021-XXXXXXX (PTCL)<br>
+sindh@adlg.org.pk
+</p>
+</div>
+<div class="card">
+<h4>LCA KP</h4>
+<p>
+[Address placeholder, Peshawar]<br>
+Contact: [Name placeholder]<br>
+Ph: 091-XXXXXXX (PTCL)<br>
+kp@adlg.org.pk
+</p>
+</div>
+<div class="card">
+<h4>LCA Balochistan</h4>
+<p>
+[Address placeholder, Quetta]<br>
+Contact: [Name placeholder]<br>
+Ph: 081-XXXXXXX (PTCL)<br>
+balochistan@adlg.org.pk
+</p>
+</div>
+<div class="card">
+<h4>LCA AJK</h4>
+<p>
+[Address placeholder, Muzaffarabad]<br>
+Contact: [Name placeholder]<br>
+Ph: 05822-XXXXXX (PTCL)<br>
+ajk@adlg.org.pk
+</p>
+</div>
+<div class="card">
+<h4>LCA GB</h4>
+<p>
+[Address placeholder, Gilgit]<br>
+Contact: [Name placeholder]<br>
+Ph: 05811-XXXXXX (PTCL)<br>
+gb@adlg.org.pk
+</p>
 </div>
 </div>
 </section>
