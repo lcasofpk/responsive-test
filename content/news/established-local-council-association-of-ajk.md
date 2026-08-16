@@ -6,7 +6,7 @@ excerpt: >
   7 July 2026 (Islamabad): A meaningful gathering took place at the ADLG Office
   in Islamabad today, as Mayors and District Council Chairmen from across Azad
   Jammu & Kashmir sat down to chart a better future for their communities.
-featuredImage: https://ibb.co/s9vfk9ZN
+featuredImage: https://i.ibb.co/WvWhqvLM/establish-ajk.jpg
 permalink: /establish-lcaajk/
 layout: news-post.njk
 ---
