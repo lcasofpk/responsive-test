@@ -1639,3 +1639,40 @@ table.acts-table tr:nth-child(even){
   }
 
 }
+ /* =========================================================
+   PARTNERS
+========================================================= */
+
+.partners{
+  width:100%;
+  background:var(--light);
+  padding:40px 5%;
+  text-align:center;
+}
+
+.partners h3{
+  color:var(--navy);
+  font-size:1rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin:0 0 24px;
+  text-align:center;
+}
+
+.partner-list{
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:32px;
+  font-weight:700;
+  text-align:center;
+}
+
+.partner-list span{
+  display:inline-block;
+  text-align:center;
+}
