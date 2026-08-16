@@ -7,7 +7,6 @@ layout: base.njk
 <div class="page-hero"><h1>Partners &amp; Donors</h1><p>Global alliances supporting local governance reform in Pakistan.</p></div>
 <section class="section">
   <div class="donor-grid">
-
     <div class="donor-card">
       <a href="https://www.eeas.europa.eu/pakistan_en"
          target="_blank"
@@ -18,7 +17,6 @@ layout: base.njk
       <h4>Delegation of the European Union to Pakistan (EU)</h4>
       <p>Strategic Multi-Year Funding Partner.</p>
     </div>
-
     <div class="donor-card">
       <a href="https://www.giz.de/en/regions/asia/pakistan"
          target="_blank"
@@ -29,7 +27,6 @@ layout: base.njk
       <h4>GIZ</h4>
       <p>Deutsche Gesellschaft für Internationale Zusammenarbeit — Municipal Energy Efficiency Partner.</p>
     </div>
-
     <div class="donor-card">
       <a href="https://uclg-aspac.org/"
          target="_blank"
@@ -40,7 +37,6 @@ layout: base.njk
       <h4>UCLG ASPAC</h4>
       <p>United Cities and Local Governments Asia Pacific — SDG Localization Partner.</p>
     </div>
-
     <div class="donor-card">
       <a href="https://www.clgf.org.uk/regions/clgf-asia/pakistan/"
          target="_blank"
@@ -51,7 +47,6 @@ layout: base.njk
       <h4>CLGF</h4>
       <p>Commonwealth Local Government Forum — Institutional Capacity Partner.</p>
     </div>
-
   </div>
 </section>
 <section class="section section-alt">
