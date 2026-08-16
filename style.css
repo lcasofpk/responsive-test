@@ -1661,15 +1661,20 @@ table.acts-table tr:nth-child(even){
 
 .partner-list{
   width:100%;
-  max-width:900px;
   margin:0 auto;
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-wrap:wrap;
-  gap:32px;
+  flex-wrap:nowrap;
+  gap:40px;
   font-weight:700;
   text-align:center;
+}
+
+.partner-list span{
+  display:inline-block;
+  text-align:center;
+  white-space:nowrap;
 }
 
 .partner-list span{
