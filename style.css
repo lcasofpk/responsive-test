@@ -853,27 +853,6 @@ table.acts-table tr:nth-child(even){
 }
 
 
-/* =========================================================
-   DONORS
-========================================================= */
-
-.donor-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:24px;
-}
-
-.donor-card{
-  background:#fff;
-  border:1px solid #eee;
-  border-radius:6px;
-  padding:24px;
-}
-
-.donor-card h4{
-  color:var(--navy);
-}
-
 
 /* =========================================================
    NEWS
@@ -1620,7 +1599,7 @@ table.acts-table tr:nth-child(even){
 
 .donor-grid{
   display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
+ grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
   gap:20px;
   width:100%;
   max-width:1200px;
