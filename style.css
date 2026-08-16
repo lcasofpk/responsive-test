@@ -1615,14 +1615,19 @@ table.acts-table tr:nth-child(even){
 }
 
 .donor-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
-  align-items: stretch;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 25px !important;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .donor-card {
+  width: auto !important;
+  margin: 0 !important;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .donor-card > a {
