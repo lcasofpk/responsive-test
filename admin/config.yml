@@ -2,7 +2,7 @@ backend:
   name: github
   repo: lcasofpk/responsive-test
   branch: main
-  base_url: https://responsive-test.localcouncilsassociationspk.workers.dev
+  base_url: https://lca.org.pk
   auth_endpoint: auth
 
 media_folder: "assets/uploads"
