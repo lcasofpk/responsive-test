@@ -1,8 +1,9 @@
 ---
-title: "Contact Us"
-description: "Contact the ADLG National Secretariat and regional offices."
-permalink: "/contact/index.html"
+title: Contact Us
+description: Contact the ADLG National Secretariat and regional offices.
+permalink: /contact/index.html
 layout: base.njk
+showInNav: true
 ---
 <div class="page-hero"><h1>Contact Us</h1><p>Reach the National Secretariat or your regional office.</p></div>
 <section class="section">
@@ -11,11 +12,9 @@ layout: base.njk
 <div class="card">
 <h4>Head Office — Islamabad</h4>
 <p>
-[Address placeholder, Islamabad]<br>
-Contact: [Name placeholder]<br>
-Ph: 051-XXXXXXX (PTCL)<br>
-info@adlg.org.pk<br>
-SECP CUIN: 0094419
+House # 909, Street #Main Double Road, Sector # E-11/4, Islamabad, Pakistan<br>
+ceo@adlg.org.pk<br>www.adlg.come.pk | www.lca.org.pk
+
 </p>
 </div>
 </div>
@@ -26,55 +25,49 @@ SECP CUIN: 0094419
 <div class="card">
 <h4>LCA Punjab</h4>
 <p>
-[Address placeholder, Lahore]<br>
-Contact: [Name placeholder]<br>
-Ph: 042-XXXXXXX (PTCL)<br>
-punjab@adlg.org.pk
+Address: House # 261, Block # D, LDA Avenue One, Lahore<br>
+Ph: +92  42 3517 0850<br>
+director@lcap.org.pk<br>www.lcap.come.pk | www.lca.org.pk
 </p>
-</div>
+</div>                      
 <div class="card">
 <h4>LCA Sindh</h4>
 <p>
-[Address placeholder, Karachi]<br>
-Contact: [Name placeholder]<br>
-Ph: 021-XXXXXXX (PTCL)<br>
-sindh@adlg.org.pk
+Address: Mezzanine Floor No 1 & 2, Building No. 1-C-1, Nishat  Commercial Lane-6, DHA Phase 6, Karachi, Sindh- Pakistan<br>
+Contact: +92 21 3534 0112<br>+92 213 534 0113<br>
+fiza.baloch@lcas.org.pk
 </p>
 </div>
 <div class="card">
 <h4>LCA KP</h4>
-<p>
-[Address placeholder, Peshawar]<br>
-Contact: [Name placeholder]<br>
-Ph: 091-XXXXXXX (PTCL)<br>
-kp@adlg.org.pk
+<p>A22, Pak BusinessCenter, Near Amin Hotel, GT Road , Peshawar – Khyber Pakhtunkhwa – Pakistan<br>
+Contact:+92917088180<br>
+director@lcap.org.pk
 </p>
 </div>
 <div class="card">
 <h4>LCA Balochistan</h4>
 <p>
-[Address placeholder, Quetta]<br>
-Contact: [Name placeholder]<br>
-Ph: 081-XXXXXXX (PTCL)<br>
-balochistan@adlg.org.pk
-</p>
+Rustam Building, 2ndFloor, Near Children Hospital Querry Road, Quetta, Balochistan – Pakistan<br>
+Contact:+92 81 2868 350<br>
+abidlehri656@gmail.com</p>
 </div>
 <div class="card">
 <h4>LCA AJK</h4>
 <p>
-[Address placeholder, Muzaffarabad]<br>
-Contact: [Name placeholder]<br>
-Ph: 05822-XXXXXX (PTCL)<br>
-ajk@adlg.org.pk
+     
+
+House # 03, Street # 02, Ward # 10, Officers Colony  Muzaffarabad, Azad Jammu & Kashmir, Pakistan<br>
+Contact:+92 582 2943947<br>
+ceo@adlg.org.pk
 </p>
 </div>
 <div class="card">
 <h4>LCA GB</h4>
 <p>
-[Address placeholder, Gilgit]<br>
-Contact: [Name placeholder]<br>
-Ph: 05811-XXXXXX (PTCL)<br>
-gb@adlg.org.pk
+House # RD, Khomer Yarkot, Gilgit, Pakistan<br>
+Contact: - <br>
+ceo@adlg.org.pk
 </p>
 </div>
 </div>
