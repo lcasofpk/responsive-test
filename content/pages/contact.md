@@ -13,7 +13,7 @@ showInNav: true
 <h4>Head Office — Islamabad</h4>
 <p>
 House # 909, Street #Main Double Road, Sector # E-11/4, Islamabad, Pakistan<br>
-ceo@adlg.org.pk<br>www.adlg.come.pk | www.lca.org.pk
+ceo@adlg.org.pk<br>www.adlg.com.pk | www.lca.org.pk
 
 </p>
 </div>
@@ -27,7 +27,7 @@ ceo@adlg.org.pk<br>www.adlg.come.pk | www.lca.org.pk
 <p>
 Address: House # 261, Block # D, LDA Avenue One, Lahore<br>
 Ph: +92  42 3517 0850<br>
-director@lcap.org.pk<br>www.lcap.come.pk | www.lca.org.pk
+director@lcap.org.pk<br>www.lcap.com.pk | www.lca.org.pk
 </p>
 </div>                      
 <div class="card">
@@ -35,14 +35,14 @@ director@lcap.org.pk<br>www.lcap.come.pk | www.lca.org.pk
 <p>
 Address: Mezzanine Floor No 1 & 2, Building No. 1-C-1, Nishat  Commercial Lane-6, DHA Phase 6, Karachi, Sindh- Pakistan<br>
 Contact: +92 21 3534 0112<br>+92 213 534 0113<br>
-fiza.baloch@lcas.org.pk
+fiza.baloch@lcas.org.pk<br>www.lcas.com.pk | www.lca.org.pk
 </p>
 </div>
 <div class="card">
 <h4>LCA KP</h4>
 <p>A22, Pak BusinessCenter, Near Amin Hotel, GT Road , Peshawar – Khyber Pakhtunkhwa – Pakistan<br>
 Contact:+92917088180<br>
-director@lcap.org.pk
+director@lcap.org.pk<br>www.lcakp.com.pk | www.lca.org.pk
 </p>
 </div>
 <div class="card">
@@ -50,7 +50,9 @@ director@lcap.org.pk
 <p>
 Rustam Building, 2ndFloor, Near Children Hospital Querry Road, Quetta, Balochistan – Pakistan<br>
 Contact:+92 81 2868 350<br>
-abidlehri656@gmail.com</p>
+abidlehri656@gmail.com<br>www.lcab.com.pk | www.lca.org.pk
+
+</p>
 </div>
 <div class="card">
 <h4>LCA AJK</h4>
@@ -59,7 +61,8 @@ abidlehri656@gmail.com</p>
 
 House # 03, Street # 02, Ward # 10, Officers Colony  Muzaffarabad, Azad Jammu & Kashmir, Pakistan<br>
 Contact:+92 582 2943947<br>
-ceo@adlg.org.pk
+ceo@adlg.org.pk<br> www.lca.org.pk
+
 </p>
 </div>
 <div class="card">
@@ -67,7 +70,7 @@ ceo@adlg.org.pk
 <p>
 House # RD, Khomer Yarkot, Gilgit, Pakistan<br>
 Contact: - <br>
-ceo@adlg.org.pk
+ceo@adlg.org.pk<br> www.lca.org.pk
 </p>
 </div>
 </div>
