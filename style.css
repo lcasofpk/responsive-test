@@ -1682,6 +1682,26 @@ table.acts-table tr:nth-child(even){
   text-align:center;
 }
 
+#scroll-top-btn{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:none;
+  background:var(--emerald);
+  color:#fff;
+  font-size:1.3rem;
+  cursor:pointer;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+  z-index:999;
+  transition:opacity 0.2s ease;
+}
+#scroll-top-btn:hover{ opacity:0.85; }
 .social-icons{ display:flex; gap:14px; margin-top:6px; }
 .social-icons a{ color:inherit; opacity:0.8; transition:opacity 0.2s ease; }
 .social-icons a:hover{ opacity:1; }
