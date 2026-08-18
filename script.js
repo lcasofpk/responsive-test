@@ -1034,13 +1034,22 @@ function openVideoModal(id,title){
 // START ALL PAGE FUNCTIONS
 // =========================================================
 
+function initScrollTopButton(){
+  const btn = document.getElementById('scroll-top-btn');
+  if(!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+  });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 document.addEventListener(
   'DOMContentLoaded',
   function(){
-
     initDocSearch();
-
     initVideoGrid();
-
+    initScrollTopButton();
   }
 );
