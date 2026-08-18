@@ -1681,3 +1681,7 @@ table.acts-table tr:nth-child(even){
   display:inline-block;
   text-align:center;
 }
+
+.social-icons{ display:flex; gap:14px; margin-top:6px; }
+.social-icons a{ color:inherit; opacity:0.8; transition:opacity 0.2s ease; }
+.social-icons a:hover{ opacity:1; }
